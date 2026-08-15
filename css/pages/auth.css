@@ -1,0 +1,418 @@
+/* ═══════════════════════════════════════════════════════════
+   AVALAN3 — AUTH PAGE STYLES
+   Sign up, Log in, Forgot password
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Page Layout ──────────────────────────────────────── */
+.auth-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: var(--space-6) var(--space-5);
+  background: var(--bg-primary);
+}
+
+/* ── Card Container ───────────────────────────────────── */
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* ── Logo ─────────────────────────────────────────────── */
+.auth-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-10);
+}
+
+.auth-logo__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: var(--brand-primary);
+  color: var(--text-inverse);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-xl);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-decoration: none;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.auth-logo__link:hover {
+  background: var(--brand-primary-hover);
+  transform: scale(1.04);
+}
+
+/* ── Header ───────────────────────────────────────────── */
+.auth-header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.auth-header__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  margin-bottom: var(--space-4);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  transition: color var(--transition-fast);
+}
+
+.auth-header__back:hover {
+  color: var(--text-primary);
+}
+
+.auth-header__back svg {
+  width: 16px;
+  height: 16px;
+}
+
+.auth-header__title {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: var(--space-2);
+}
+
+.auth-header__subtitle {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* ── Mode Panels ──────────────────────────────────────── */
+.auth-mode {
+  display: none;
+}
+
+.auth-mode.active {
+  display: block;
+  animation: authFadeIn 0.25s ease;
+}
+
+@keyframes authFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Form ─────────────────────────────────────────────── */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.auth-field {
+  position: relative;
+}
+
+.auth-field__label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.auth-field__input {
+  width: 100%;
+  height: 48px;
+  padding: 0 var(--space-4);
+  padding-right: var(--space-12);
+  background: var(--bg-secondary);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.auth-field__input:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px var(--brand-primary-subtle);
+  outline: none;
+}
+
+.auth-field__input::placeholder {
+  color: var(--text-muted);
+}
+
+.auth-field__input--error {
+  border-color: var(--error) !important;
+  box-shadow: 0 0 0 3px var(--error-subtle) !important;
+}
+
+/* No right padding for fields without toggle */
+.auth-field__input--no-toggle {
+  padding-right: var(--space-4);
+}
+
+/* ── Password Toggle ──────────────────────────────────── */
+.auth-field__toggle {
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: var(--text-muted);
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast);
+}
+
+.auth-field__toggle:hover {
+  color: var(--text-secondary);
+}
+
+.auth-field__toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Adjust toggle position when label is present */
+.auth-field--password .auth-field__toggle {
+  top: calc(50% + 10px);
+}
+
+/* ── Field Error ──────────────────────────────────────── */
+.auth-field__error {
+  font-size: var(--text-xs);
+  color: var(--error);
+  margin-top: var(--space-1);
+  min-height: 16px;
+  line-height: 1.3;
+}
+
+/* ── Forgot Password Link ─────────────────────────────── */
+.auth-forgot-link {
+  display: inline-block;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--brand-primary);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  transition: color var(--transition-fast);
+}
+
+.auth-forgot-link:hover {
+  color: var(--brand-primary-hover);
+}
+
+/* ── Submit Button ────────────────────────────────────── */
+.auth-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  height: 48px;
+  padding: 0 var(--space-6);
+  background: var(--brand-primary);
+  color: var(--text-inverse);
+  font-size: var(--text-base);
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast), opacity var(--transition-fast);
+  margin-top: var(--space-2);
+}
+
+.auth-submit:hover {
+  background: var(--brand-primary-hover);
+}
+
+.auth-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-submit__spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+/* ── Divider ──────────────────────────────────────────── */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin: var(--space-2) 0;
+}
+
+.auth-divider__line {
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+.auth-divider__text {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ── Google OAuth Button ──────────────────────────────── */
+.auth-oauth {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  width: 100%;
+  height: 48px;
+  padding: 0 var(--space-6);
+  background: var(--surface-1);
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.auth-oauth:hover {
+  background: var(--bg-secondary);
+  border-color: var(--text-muted);
+}
+
+.auth-oauth:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-oauth svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* ── Footer Link ──────────────────────────────────────── */
+.auth-footer {
+  text-align: center;
+  margin-top: var(--space-6);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.auth-footer__link {
+  color: var(--brand-primary);
+  font-weight: 600;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  transition: color var(--transition-fast);
+}
+
+.auth-footer__link:hover {
+  color: var(--brand-primary-hover);
+}
+
+/* ── Success Card (Forgot Password) ───────────────────── */
+.auth-success {
+  display: none;
+  text-align: center;
+  padding: var(--space-6);
+  background: var(--success-subtle);
+  border: 1px solid var(--success);
+  border-radius: var(--radius-lg);
+  margin-top: var(--space-4);
+}
+
+.auth-success.visible {
+  display: block;
+  animation: authFadeIn 0.3s ease;
+}
+
+.auth-success__icon {
+  width: 40px;
+  height: 40px;
+  color: var(--success);
+  margin: 0 auto var(--space-3);
+}
+
+.auth-success__title {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.auth-success__desc {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ── General Error Banner ─────────────────────────────── */
+.auth-error-banner {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--error-subtle);
+  border: 1px solid var(--error);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--error);
+  line-height: 1.4;
+  margin-bottom: var(--space-4);
+}
+
+.auth-error-banner.visible {
+  display: flex;
+  animation: authFadeIn 0.25s ease;
+}
+
+.auth-error-banner__icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ── Responsive ───────────────────────────────────────── */
+@media (max-width: 480px) {
+  .auth-page {
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .auth-logo {
+    margin-bottom: var(--space-8);
+  }
+
+  .auth-header__title {
+    font-size: var(--text-xl);
+  }
+}
