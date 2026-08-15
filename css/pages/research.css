@@ -91,7 +91,9 @@ body {
   max-width: 480px;
   width: 100%;
   margin: 0 auto;
-  padding: var(--space-6) var(--space-4) var(--space-8);
+  padding: var(--space-6) var(--space-4) 0;
+  /* Ensure content clears the fixed bottom nav */
+  padding-bottom: calc(var(--bottom-nav-height, 64px) + var(--space-6) + env(safe-area-inset-bottom, 0px));
 }
 
 /* ═══════════════════════════════════════════════════════════
