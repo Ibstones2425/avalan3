@@ -92,6 +92,17 @@
   /* Layout */
   --container-max: 960px;
   --topbar-height: 56px;
+  --bottom-nav-height: 64px;
+
+  /* Surface aliases — used in components and page CSS */
+  --surface-1: var(--bg-primary);
+  --surface-2: var(--bg-secondary);
+  --surface-3: var(--bg-tertiary);
+
+  /* Status aliases — shorthand used in some page CSS */
+  --success: var(--status-success);
+  --warning: var(--status-warning);
+  --error:   var(--status-error);
 }
 
 /* ============================================================
@@ -105,7 +116,7 @@
 
   --text-primary: #F1F5F9;
   --text-secondary: #CBD5E1;
-  --text-muted: #64748B;
+  --text-muted: #94A3B8;   /* slate-400 — 5.9:1 contrast on --bg-primary, WCAG AA */
   --text-inverse: #0F172A;
 
   --border-subtle: #334155;

@@ -230,13 +230,14 @@
 .bottomnav {
   position: fixed;
   bottom: 0; left: 0; right: 0;
-  height: var(--bottom-nav-height, 64px);
-  background: var(--surface-1);
+  height: calc(var(--bottom-nav-height, 64px) + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: var(--bg-primary);   /* was --surface-1 which wasn't globally defined */
   border-top: 1px solid var(--border-subtle);
   display: flex;
   align-items: stretch;
   z-index: 100;
-  max-width: var(--max-width, 480px);
+  max-width: 480px;
   margin: 0 auto;
 }
 .bottomnav__item {
