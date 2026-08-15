@@ -39,7 +39,7 @@ const AVALAN3_CONFIG = {
         gemini: {
             // ⚠️  REPLACE with a real key from https://aistudio.google.com/apikey
             // Real keys start with AIzaSy... — the placeholder below will fail with AI_AUTH_ERROR.
-            apiKey: "PASTE_YOUR_GEMINI_API_KEY_HERE",
+            apiKey: "AIzaSyCKUmpEesHrThjdCWzM_dGApOytqs5PGvA",
             model: "gemini-2.5-flash",
             // Must include /models — ai.js appends "/{model}:generateContent?key=..."
             baseUrl: "https://generativelanguage.googleapis.com/v1beta/models"
