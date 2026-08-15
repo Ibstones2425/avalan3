@@ -3,373 +3,163 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Onboarding — Avalan3</title>
-  <meta name="description" content="Set up your Avalan3 Web3 earning journey">
-
-  <!-- Google Fonts: Inter -->
+  <title>Setup — Avalan3</title>
+  <meta name="description" content="Set up your Avalan3 profile">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Stylesheets -->
   <link rel="stylesheet" href="/css/tokens.css">
   <link rel="stylesheet" href="/css/global.css">
   <link rel="stylesheet" href="/css/components.css">
   <link rel="stylesheet" href="/css/pages/onboarding.css">
-
-  <!-- Manifest -->
   <link rel="manifest" href="/manifest.json">
-
-  <!-- Config (must load before Firebase init) -->
   <script src="/js/config.js" defer></script>
-
-  <!-- Firebase CDN compat v10 -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js" defer></script>
-
-  <!-- App scripts (defer, order matters) -->
   <script src="/js/firebase-init.js" defer></script>
-  <script src="/js/auth-guard.js" defer></script>
   <script src="/js/theme.js" defer></script>
-  <script src="/js/db.js" defer></script>
   <script src="/js/utils.js" defer></script>
+  <script src="/js/db.js" defer></script>
   <script src="/js/pages/onboarding.js" defer></script>
-
-  <!-- Service Worker -->
   <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(() => {});
-    }
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
   </script>
 </head>
-<body>
+<body class="onboarding-body">
 
-  <!-- ═══════════════════════════════════════════════════════════
-       PHASE A — SPLASH SCREENS
-       ═══════════════════════════════════════════════════════════ -->
-  <div id="splash-phase" class="onboarding-phase onboarding-phase--active">
+  <div class="onboarding-shell">
 
-    <!-- Skip button (top-right) -->
-    <button id="splash-skip" class="splash-skip" type="button">Skip</button>
+    <!-- Header -->
+    <header class="onboarding-header">
+      <div class="onboarding-logo">Avalan3</div>
+      <div class="onboarding-step-indicator" id="step-indicator">1 of 2</div>
+    </header>
 
-    <!-- Splash slides container -->
-    <div id="splash-track" class="splash-track">
-
-      <!-- Slide 1 -->
-      <div class="splash-slide" data-slide="0">
-        <div class="splash-slide__inner">
-          <div class="splash-slide__badge">Opportunity</div>
-          <h1 class="splash-slide__title">Web3 is hiring<br>right now</h1>
-          <p class="splash-slide__body">The opportunity is massive. Billions are flowing into crypto projects that need community managers, content creators, and operators like you.</p>
-        </div>
-      </div>
-
-      <!-- Slide 2 -->
-      <div class="splash-slide" data-slide="1">
-        <div class="splash-slide__inner">
-          <div class="splash-slide__badge">Choose</div>
-          <h1 class="splash-slide__title">Pick your lane</h1>
-          <p class="splash-slide__body">CM, Content, Dev, Design, Shill — there's a role for everyone in Web3</p>
-        </div>
-      </div>
-
-      <!-- Slide 3 -->
-      <div class="splash-slide" data-slide="2">
-        <div class="splash-slide__inner">
-          <div class="splash-slide__badge">Toolkit</div>
-          <h1 class="splash-slide__title">Use real tools</h1>
-          <p class="splash-slide__body">Job boards, discovery sites, DM scripts — all in one place. No fluff, just what works.</p>
-        </div>
-      </div>
-
-      <!-- Slide 4 -->
-      <div class="splash-slide" data-slide="3">
-        <div class="splash-slide__inner">
-          <div class="splash-slide__badge">AI Powered</div>
-          <h1 class="splash-slide__title">Your AI guide<br>is ready</h1>
-          <p class="splash-slide__body">Ask anything. Research projects. Get your first gig. Powered by Gemini or Grok.</p>
-        </div>
-      </div>
-
+    <!-- Progress bar -->
+    <div class="onboarding-progress">
+      <div class="onboarding-progress__fill" id="progress-fill" style="width: 50%"></div>
     </div>
 
-    <!-- Dot indicators -->
-    <div id="splash-dots" class="splash-dots">
-      <span class="splash-dot splash-dot--active" data-dot="0"></span>
-      <span class="splash-dot" data-dot="1"></span>
-      <span class="splash-dot" data-dot="2"></span>
-      <span class="splash-dot" data-dot="3"></span>
-    </div>
-
-  </div>
-
-  <!-- ═══════════════════════════════════════════════════════════
-       PHASE B — SETUP STEPS
-       ═══════════════════════════════════════════════════════════ -->
-  <div id="setup-phase" class="onboarding-phase">
-
-    <!-- Top bar: back button + progress -->
-    <div class="setup-header">
-      <button id="setup-back" class="setup-back" type="button" aria-label="Go back">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-      <div class="progress-bar setup-progress-bar">
-        <div id="setup-progress-fill" class="progress-fill" style="width: 25%"></div>
+    <!-- ─── STEP 1: PICK YOUR LANE ─── -->
+    <section class="onboarding-step onboarding-step--active" id="step-1">
+      <div class="onboarding-step__header">
+        <h1 class="onboarding-step__title">What's your lane?</h1>
+        <p class="onboarding-step__subtitle">Pick what you specialise in. This personalises your AI guide and toolkit.</p>
       </div>
-      <div class="setup-step-count">
-        <span id="setup-step-current">1</span>/4
-      </div>
-    </div>
 
-    <!-- Steps container -->
-    <div id="setup-track" class="setup-track">
+      <div class="onboarding-options" id="lane-options">
 
-      <!-- Step 1 — Experience Level -->
-      <div class="setup-step" data-step="1">
-        <div class="setup-step__inner">
-          <h2 class="setup-step__question">Where are you right now?</h2>
-          <div class="setup-step__options">
-
-            <div class="option-card" data-value="complete-beginner" tabindex="0" role="radio" aria-checked="false">
-              <div class="option-card__check">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="option-card__content">
-                <div class="option-card__title">Complete Beginner</div>
-                <div class="option-card__desc">New to Web3 and crypto entirely</div>
-              </div>
-            </div>
-
-            <div class="option-card" data-value="know-basics" tabindex="0" role="radio" aria-checked="false">
-              <div class="option-card__check">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="option-card__content">
-                <div class="option-card__title">Know the Basics</div>
-                <div class="option-card__desc">Familiar with wallets, tokens, and DeFi</div>
-              </div>
-            </div>
-
-            <div class="option-card" data-value="already-earning" tabindex="0" role="radio" aria-checked="false">
-              <div class="option-card__check">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="option-card__content">
-                <div class="option-card__title">Already Earning</div>
-                <div class="option-card__desc">Making income from Web3 work</div>
-              </div>
-            </div>
-
+        <button class="onboarding-option" data-value="community-manager" type="button">
+          <div class="onboarding-option__content">
+            <span class="onboarding-option__title">Community Manager</span>
+            <span class="onboarding-option__desc">Discord, Telegram, Twitter community growth and ops</span>
           </div>
-        </div>
-      </div>
-
-      <!-- Step 2 — Pick Your Lane -->
-      <div class="setup-step" data-step="2">
-        <div class="setup-step__inner">
-          <h2 class="setup-step__question">What type of work interests you most?</h2>
-          <div class="setup-step__options">
-
-            <div class="option-card" data-value="community-manager" tabindex="0" role="radio" aria-checked="false">
-              <div class="option-card__check">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="option-card__content">
-                <div class="option-card__title">Community Manager</div>
-                <div class="option-card__desc">Build and grow Discord &amp; Telegram communities</div>
-              </div>
-            </div>
-
-            <div class="option-card" data-value="content-creator" tabindex="0" role="radio" aria-checked="false">
-              <div class="option-card__check">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="option-card__content">
-                <div class="option-card__title">Content Creator</div>
-                <div class="option-card__desc">Write threads, make videos, build an audience</div>
-              </div>
-            </div>
-
-            <div class="option-card" data-value="shiller-raider" tabindex="0" role="radio" aria-checked="false">
-              <div class="option-card__check">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="option-card__content">
-                <div class="option-card__title">Shiller / Raider</div>
-                <div class="option-card__desc">Promote projects, raid comment sections</div>
-              </div>
-            </div>
-
-            <div class="option-card" data-value="developer" tabindex="0" role="radio" aria-checked="false">
-              <div class="option-card__check">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="option-card__content">
-                <div class="option-card__title">Developer</div>
-                <div class="option-card__desc">Build dApps, smart contracts, or tooling</div>
-              </div>
-            </div>
-
-            <div class="option-card" data-value="designer" tabindex="0" role="radio" aria-checked="false">
-              <div class="option-card__check">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="option-card__content">
-                <div class="option-card__title">Designer</div>
-                <div class="option-card__desc">UI/UX, brand identity, or motion graphics</div>
-              </div>
-            </div>
-
-            <div class="option-card" data-value="not-sure-yet" tabindex="0" role="radio" aria-checked="false">
-              <div class="option-card__check">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="option-card__content">
-                <div class="option-card__title">Not Sure Yet</div>
-                <div class="option-card__desc">Explore first — no pressure to pick</div>
-              </div>
-            </div>
-
+          <div class="onboarding-option__check" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-        </div>
-      </div>
+        </button>
 
-      <!-- Step 3 — Your Goal -->
-      <div class="setup-step" data-step="3">
-        <div class="setup-step__inner">
-          <h2 class="setup-step__question">What do you want to achieve?</h2>
-          <div class="setup-step__options">
-
-            <div class="option-card" data-value="first-paid-gig" tabindex="0" role="radio" aria-checked="false">
-              <div class="option-card__check">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="option-card__content">
-                <div class="option-card__title">Get My First Paid Gig</div>
-                <div class="option-card__desc">Land that first Web3 opportunity</div>
-              </div>
-            </div>
-
-            <div class="option-card" data-value="go-fulltime-web3" tabindex="0" role="radio" aria-checked="false">
-              <div class="option-card__check">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="option-card__content">
-                <div class="option-card__title">Go Full-Time Web3</div>
-                <div class="option-card__desc">Make crypto your primary income source</div>
-              </div>
-            </div>
-
-            <div class="option-card" data-value="build-reputation" tabindex="0" role="radio" aria-checked="false">
-              <div class="option-card__check">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="option-card__content">
-                <div class="option-card__title">Build My Reputation</div>
-                <div class="option-card__desc">Establish credibility in the space</div>
-              </div>
-            </div>
-
-            <div class="option-card" data-value="just-exploring" tabindex="0" role="radio" aria-checked="false">
-              <div class="option-card__check">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="option-card__content">
-                <div class="option-card__title">Just Exploring</div>
-                <div class="option-card__desc">See what's out there at my own pace</div>
-              </div>
-            </div>
-
+        <button class="onboarding-option" data-value="content-creator" type="button">
+          <div class="onboarding-option__content">
+            <span class="onboarding-option__title">Content Creator</span>
+            <span class="onboarding-option__desc">Threads, articles, newsletters, project narratives</span>
           </div>
-        </div>
-      </div>
-
-      <!-- Step 4 — Time Available -->
-      <div class="setup-step" data-step="4">
-        <div class="setup-step__inner">
-          <h2 class="setup-step__question">How much time can you commit daily?</h2>
-          <div class="setup-step__options">
-
-            <div class="option-card" data-value="under-1-hour" tabindex="0" role="radio" aria-checked="false">
-              <div class="option-card__check">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="option-card__content">
-                <div class="option-card__title">Under 1 Hour</div>
-                <div class="option-card__desc">Dipping in between other commitments</div>
-              </div>
-            </div>
-
-            <div class="option-card" data-value="1-3-hours" tabindex="0" role="radio" aria-checked="false">
-              <div class="option-card__check">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="option-card__content">
-                <div class="option-card__title">1–3 Hours</div>
-                <div class="option-card__desc">Consistent side-hustle pace</div>
-              </div>
-            </div>
-
-            <div class="option-card" data-value="3-plus-hours" tabindex="0" role="radio" aria-checked="false">
-              <div class="option-card__check">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="option-card__content">
-                <div class="option-card__title">3+ Hours</div>
-                <div class="option-card__desc">All in — ready to grind</div>
-              </div>
-            </div>
-
+          <div class="onboarding-option__check" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-        </div>
+        </button>
+
+        <button class="onboarding-option" data-value="shiller" type="button">
+          <div class="onboarding-option__content">
+            <span class="onboarding-option__title">Shiller / Raider</span>
+            <span class="onboarding-option__desc">Token promotion, CT raids, hype and growth campaigns</span>
+          </div>
+          <div class="onboarding-option__check" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </button>
+
+        <button class="onboarding-option" data-value="developer" type="button">
+          <div class="onboarding-option__content">
+            <span class="onboarding-option__title">Developer</span>
+            <span class="onboarding-option__desc">Smart contracts, dApps, bots, tooling, infrastructure</span>
+          </div>
+          <div class="onboarding-option__check" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </button>
+
+        <button class="onboarding-option" data-value="designer" type="button">
+          <div class="onboarding-option__content">
+            <span class="onboarding-option__title">Designer</span>
+            <span class="onboarding-option__desc">UI/UX, NFT art, branding, social media visuals</span>
+          </div>
+          <div class="onboarding-option__check" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </button>
+
       </div>
 
-    </div>
+      <div class="onboarding-actions">
+        <button class="btn-primary" id="btn-next-1" type="button" disabled>Continue</button>
+      </div>
+    </section>
 
-    <!-- Next / Continue button -->
-    <div class="setup-footer">
-      <button id="setup-next" class="btn-primary setup-next-btn" type="button" disabled>
-        <span id="setup-next-text">Next</span>
-        <svg id="setup-next-arrow" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3.75 9H14.25M14.25 9L9.75 4.5M14.25 9L9.75 13.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span id="setup-next-spinner" class="spinner" style="display:none;"></span>
-      </button>
+    <!-- ─── STEP 2: HOW YOU FIND WORK ─── -->
+    <section class="onboarding-step" id="step-2">
+      <div class="onboarding-step__header">
+        <h1 class="onboarding-step__title">How do you find work?</h1>
+        <p class="onboarding-step__subtitle">This shapes which tools and DM approaches your AI guide recommends.</p>
+      </div>
+
+      <div class="onboarding-options" id="workstyle-options">
+
+        <button class="onboarding-option" data-value="dm-outreach" type="button">
+          <div class="onboarding-option__content">
+            <span class="onboarding-option__title">Direct Outreach</span>
+            <span class="onboarding-option__desc">I cold DM projects on Twitter, Discord, and Telegram</span>
+          </div>
+          <div class="onboarding-option__check" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </button>
+
+        <button class="onboarding-option" data-value="job-boards" type="button">
+          <div class="onboarding-option__content">
+            <span class="onboarding-option__title">Job Boards</span>
+            <span class="onboarding-option__desc">I apply through CryptoJobsList, web3.career, LaborX, etc.</span>
+          </div>
+          <div class="onboarding-option__check" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </button>
+
+        <button class="onboarding-option" data-value="both" type="button">
+          <div class="onboarding-option__content">
+            <span class="onboarding-option__title">Both</span>
+            <span class="onboarding-option__desc">I mix direct outreach with job board applications</span>
+          </div>
+          <div class="onboarding-option__check" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </button>
+
+      </div>
+
+      <div class="onboarding-actions onboarding-actions--row">
+        <button class="btn-secondary" id="btn-back-2" type="button">Back</button>
+        <button class="btn-primary" id="btn-finish" type="button" disabled>
+          <span id="finish-label">Get Started</span>
+          <span id="finish-spinner" class="spinner" hidden></span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Error toast -->
+    <div class="onboarding-error" id="onboarding-error" hidden>
+      <span id="onboarding-error-text">Something went wrong. Please try again.</span>
     </div>
 
   </div>
