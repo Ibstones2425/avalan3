@@ -32,13 +32,13 @@ const AVALAN3_CONFIG = {
     //         baseUrl: "https://api.x.ai/v1/chat/completions"
     //     }
     // },
-        // ── AI PROVIDERS ──────────────────────────────────────
+    // ── AI PROVIDERS ──────────────────────────────────────
     ai: {
         activeProvider: "gemini",
 
         gemini: {
             // Replace with a valid key starting with AIzaSy...
-            apiKey: "YOUR_GEMINI_API_KEY_HERE",
+            apiKey: "AQ.Ab8RN6IidDn1QCa827C_HAAeKhbc8a0FdvymJoW9lr9RiZWKXQ",
             model: "gemini-2.5-flash",
             // Clean base URL for API queries
             baseUrl: "https://generativelanguage.googleapis.com/v1beta"
@@ -47,11 +47,10 @@ const AVALAN3_CONFIG = {
         grok: {
             apiKey: "xai-wi0tx7zWAhIWpt6wfKrBsDYGG5uGW2jJdBtgjpSKLv6K2z176mOApE9GPpVy2OuvOpcCJUpF2LWWzH2F",
             // Updated to an active, supported model
-            model: "grok-2-mini", 
+            model: "grok-2-mini",
             baseUrl: "https://api.x.ai/v1/chat/completions"
         }
     },
-
 
     // ── WEB SEARCH (Serper.dev) ───────────────────────────
     serper: {
