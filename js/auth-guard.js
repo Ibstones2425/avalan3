@@ -38,6 +38,10 @@ auth.onAuthStateChanged(async (user) => {
     console.error('Auth guard: Firestore read failed', err);
   }
 
+  // Expose to window so page scripts (especially ai-guide.js) can access them
+  window.currentUser = currentUser;
+  window.userProfile = userProfile;
+
   // Dispatch event so page scripts know auth is ready
   window.dispatchEvent(new CustomEvent('avalan3:auth-ready', {
     detail: { user: currentUser, profile: userProfile }
