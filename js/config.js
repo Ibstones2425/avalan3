@@ -37,17 +37,18 @@ const AVALAN3_CONFIG = {
         activeProvider: "gemini",
 
         gemini: {
-            // Replace with a valid key starting with AIzaSy...
-            apiKey: "AQ.Ab8RN6IidDn1QCa827C_HAAeKhbc8a0FdvymJoW9lr9RiZWKXQ",
+            // ⚠️  REPLACE with a real key from https://aistudio.google.com/apikey
+            // Real keys start with AIzaSy... — the placeholder below will fail with AI_AUTH_ERROR.
+            apiKey: "PASTE_YOUR_GEMINI_API_KEY_HERE",
             model: "gemini-2.5-flash",
-            // Clean base URL for API queries
-            baseUrl: "https://generativelanguage.googleapis.com/v1beta"
+            // Must include /models — ai.js appends "/{model}:generateContent?key=..."
+            baseUrl: "https://generativelanguage.googleapis.com/v1beta/models"
         },
 
         grok: {
-            apiKey: "xai-wi0tx7zWAhIWpt6wfKrBsDYGG5uGW2jJdBtgjpSKLv6K2z176mOApE9GPpVy2OuvOpcCJUpF2LWWzH2F",
-            // Updated to an active, supported model
-            model: "grok-2-mini",
+            // ⚠️  REPLACE with a real key from https://console.x.ai/
+            apiKey: "PASTE_YOUR_GROK_API_KEY_HERE",
+            model: "grok-3-mini",
             baseUrl: "https://api.x.ai/v1/chat/completions"
         }
     },
