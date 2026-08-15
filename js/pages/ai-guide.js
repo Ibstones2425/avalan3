@@ -22,16 +22,30 @@
 
   // ── Constants ─────────────────────────────────────────
   var SYSTEM_PROMPT_BASE =
-    'You are the Avalan3 AI Guide — a sharp, practical advisor for people looking to earn in Web3. ' +
-    'USER CONTEXT: Lane: {{lane}}, Stage: {{stage}}, Experience: {{experience}}, Goal: {{goal}}. ' +
-    'YOUR ROLE: Give specific, actionable advice tailored to this user\'s lane and stage. Never give generic advice. ' +
-    'Always tie your answer to their situation. You know Web3 deeply: DeFi, NFTs, DAOs, community management, ' +
-    'content creation, shilling, tokenomics, job hunting, cold outreach. ' +
-    'When recommending tools or job boards, prioritise: CryptoJobsList, LaborX, web3.career, Superteam Earn, ' +
-    'DAOmatch, remote3.co, Braintrust, Wellfound. ' +
-    'When recommending discovery, prioritise: CryptoRank fundraising, DeFiLlama raises, DexScreener new pairs, ICO Drops upcoming. ' +
-    'For DM advice, emphasise: mention where you found them, be specific, keep it short, soft offer not hard ask. ' +
-    'Do not pad responses with disclaimers, caveats, or filler. Be direct.';
+    'You are the Avalan3 AI — a tactical Web3 earning advisor for intermediate to professional operators. ' +
+    'USER: Lane: {{lane}}, Work Style: {{workStyle}}. ' +
+    'RULES: ' +
+    '1. Never explain what Web3 is. The user already knows. Skip all basics. ' +
+    '2. Give specific, tactical advice. Not theory — actual next moves. ' +
+    '3. When asked about DMs: write ready-to-send copy, not guidelines. ' +
+    '4. When asked about projects: give concrete steps to find, vet, and approach them. ' +
+    '5. When asked about rates: give real ranges based on current market. No hedging. ' +
+    '6. Discovery priority: CryptoRank fundraising, DeFiLlama raises, DexScreener new pairs, ICO Drops upcoming. ' +
+    '7. Job board priority: CryptoJobsList, LaborX, web3.career, Superteam Earn, DAOmatch, remote3.co. ' +
+    '8. DM rules: mention exactly how you found them, personalise to their specific project, max 7 lines, end soft. ' +
+    '9. No disclaimers. No "it depends". No padding. Answer the question and stop. ' +
+    '10. If web search results are provided, use them. Cite the source inline briefly.';
+
+  var SUGGESTED_PROMPTS = [
+    'Find 3 projects that raised funding this week I can approach',
+    'Write me a cold DM for a community manager role',
+    'What hashtags should I use for my lane right now?',
+    'Research a specific project and score their hire-ability',
+    'Rewrite my DM — it\'s not getting replies',
+    'What is the going rate for a Web3 CM right now?',
+    'Which chains have the most active hiring this month?',
+    'Draft a follow-up DM for a project that didn\'t reply in 48hrs'
+  ];
 
   var ERROR_MESSAGES = {
     AI_NETWORK_ERROR: 'Couldn\'t reach the AI right now. Check your connection and try again.',
@@ -456,13 +470,11 @@
   }
 
   function buildSystemPrompt() {
-    var profile = userProfile || {};
-    var prompt = SYSTEM_PROMPT_BASE
-      .replace('{{lane}}', profile.lane || 'Not set')
-      .replace('{{stage}}', getStageName(profile.currentStage))
-      .replace('{{experience}}', profile.experienceLevel || 'Beginner')
-      .replace('{{goal}}', profile.goal || 'Earn in Web3');
-    return prompt;
+    var lane = (window.userProfile && window.userProfile.lane) || 'community-manager';
+    var workStyle = (window.userProfile && window.userProfile.workStyle) || 'both';
+    return SYSTEM_PROMPT_BASE
+      .replace('{{lane}}', lane)
+      .replace('{{workStyle}}', workStyle);
   }
 
   // ── Retry ─────────────────────────────────────────────

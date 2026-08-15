@@ -12,19 +12,17 @@
      ---------------------------------------------------------- */
 
   var LANES = [
-    { value: 'community-manager', title: 'Community Manager', desc: 'Build and grow Discord & Telegram communities' },
-    { value: 'content-creator',   title: 'Content Creator',   desc: 'Write threads, make videos, build an audience' },
-    { value: 'shiller-raider',    title: 'Shiller / Raider',  desc: 'Promote projects, raid comment sections' },
-    { value: 'developer',         title: 'Developer',         desc: 'Build dApps, smart contracts, or tooling' },
-    { value: 'designer',          title: 'Designer',          desc: 'UI/UX, brand identity, or motion graphics' },
-    { value: 'not-sure-yet',      title: 'Not Sure Yet',      desc: 'Explore first — no pressure to pick' }
+    { value: 'community-manager', title: 'Community Manager', desc: 'Discord, Telegram, Twitter community growth and ops' },
+    { value: 'content-creator',   title: 'Content Creator',   desc: 'Threads, articles, newsletters, project narratives' },
+    { value: 'shiller',           title: 'Shiller / Raider',  desc: 'Token promotion, CT raids, hype and growth campaigns' },
+    { value: 'developer',         title: 'Developer',         desc: 'Smart contracts, dApps, bots, tooling, infrastructure' },
+    { value: 'designer',          title: 'Designer',          desc: 'UI/UX, NFT art, branding, social media visuals' }
   ];
 
-  var GOALS = [
-    { value: 'first-paid-gig',   title: 'Get My First Paid Gig', desc: 'Land that first Web3 opportunity' },
-    { value: 'go-fulltime-web3', title: 'Go Full-Time Web3',     desc: 'Make crypto your primary income source' },
-    { value: 'build-reputation', title: 'Build My Reputation',   desc: 'Establish credibility in the space' },
-    { value: 'just-exploring',   title: 'Just Exploring',        desc: "See what's out there at my own pace" }
+  var WORK_STYLES = [
+    { value: 'dm-outreach', title: 'Direct Outreach', desc: 'I cold DM projects on Twitter, Discord, and Telegram' },
+    { value: 'job-boards',  title: 'Job Boards',      desc: 'I apply through CryptoJobsList, web3.career, LaborX, etc.' },
+    { value: 'both',        title: 'Both',            desc: 'I mix direct outreach with job board applications' }
   ];
 
   var AI_DESCRIPTIONS = {
@@ -35,8 +33,8 @@
   var LANE_DISPLAY = {};
   LANES.forEach(function (l) { LANE_DISPLAY[l.value] = l.title; });
 
-  var GOAL_DISPLAY = {};
-  GOALS.forEach(function (g) { GOAL_DISPLAY[g.value] = g.title; });
+  var WORKSTYLE_DISPLAY = {};
+  WORK_STYLES.forEach(function (w) { WORKSTYLE_DISPLAY[w.value] = w.title; });
 
   /* ----------------------------------------------------------
      DOM REFERENCES
@@ -47,7 +45,7 @@
     avatar:           document.getElementById('profile-avatar'),
     displayName:      document.getElementById('profile-display-name'),
     laneBadge:        document.getElementById('profile-lane-badge'),
-    stageBadge:       document.getElementById('profile-stage-badge'),
+    workStyleBadge:   document.getElementById('profile-workstyle-badge'),
     memberSince:      document.getElementById('profile-member-since'),
 
     /* My Profile */
@@ -59,8 +57,8 @@
     btnCancelName:    document.getElementById('btn-cancel-name'),
     settingLane:      document.getElementById('setting-lane'),
     settingLaneValue: document.getElementById('setting-lane-value'),
-    settingGoal:      document.getElementById('setting-goal'),
-    settingGoalValue: document.getElementById('setting-goal-value'),
+    settingWorkStyle:      document.getElementById('setting-workstyle'),
+    settingWorkStyleValue: document.getElementById('setting-workstyle-value'),
 
     /* Account */
     settingEmailValue:       document.getElementById('setting-email-value'),
@@ -98,7 +96,7 @@
     uid: null,
     user: null,     /* Firebase Auth user */
     profile: null,  /* Firestore user doc */
-    pickerType: null /* 'lane' | 'goal' */
+    pickerType: null /* 'lane' | 'workStyle' */
   };
 
   /* ----------------------------------------------------------
@@ -126,11 +124,11 @@
     var name = (profile && profile.displayName) || (user && user.displayName) || 'Web3er';
     if (dom.displayName) dom.displayName.textContent = name;
 
-    var lane = (profile && profile.lane) || 'not-sure-yet';
+    var lane = (profile && profile.lane) || 'community-manager';
     if (dom.laneBadge) dom.laneBadge.textContent = LANE_DISPLAY[lane] || 'Lane';
 
-    var stage = (profile && profile.currentStage) || 0;
-    if (dom.stageBadge) dom.stageBadge.textContent = 'Stage ' + stage;
+    var workStyle = (profile && profile.workStyle) || 'both';
+    if (dom.workStyleBadge) dom.workStyleBadge.textContent = WORKSTYLE_DISPLAY[workStyle] || 'Work Style';
 
     var createdAt = (profile && profile.createdAt) || (user && user.metadata && user.metadata.creationTime);
     if (dom.memberSince) {
@@ -151,11 +149,11 @@
     var name = (profile && profile.displayName) || '—';
     if (dom.settingNameValue) dom.settingNameValue.textContent = name;
 
-    var lane = (profile && profile.lane) || 'not-sure-yet';
+    var lane = (profile && profile.lane) || 'community-manager';
     if (dom.settingLaneValue) dom.settingLaneValue.textContent = LANE_DISPLAY[lane] || lane;
 
-    var goal = (profile && profile.goal) || '';
-    if (dom.settingGoalValue) dom.settingGoalValue.textContent = GOAL_DISPLAY[goal] || goal || '—';
+    var workStyle = (profile && profile.workStyle) || 'both';
+    if (dom.settingWorkStyleValue) dom.settingWorkStyleValue.textContent = WORKSTYLE_DISPLAY[workStyle] || workStyle;
   }
 
   /* ----------------------------------------------------------
@@ -262,11 +260,11 @@
   function openPicker(type) {
     state.pickerType = type;
 
-    var items = type === 'lane' ? LANES : GOALS;
+    var items = type === 'lane' ? LANES : WORK_STYLES;
     var currentVal = type === 'lane'
-      ? (state.profile && state.profile.lane) || 'not-sure-yet'
-      : (state.profile && state.profile.goal) || '';
-    var title = type === 'lane' ? 'Select Lane' : 'Select Goal';
+      ? (state.profile && state.profile.lane) || 'community-manager'
+      : (state.profile && state.profile.workStyle) || 'both';
+    var title = type === 'lane' ? 'Select Lane' : 'Select Work Style';
 
     if (dom.pickerTitle) dom.pickerTitle.textContent = title;
 
@@ -315,7 +313,7 @@
   async function onPickerSelect(value) {
     if (!state.pickerType || !state.uid) return;
 
-    var field = state.pickerType; /* 'lane' or 'goal' */
+    var field = state.pickerType; /* 'lane' or 'workStyle' */
     var update = {};
     update[field] = value;
 
@@ -327,8 +325,9 @@
       if (field === 'lane') {
         if (dom.settingLaneValue) dom.settingLaneValue.textContent = LANE_DISPLAY[value] || value;
         if (dom.laneBadge) dom.laneBadge.textContent = LANE_DISPLAY[value] || value;
-      } else if (field === 'goal') {
-        if (dom.settingGoalValue) dom.settingGoalValue.textContent = GOAL_DISPLAY[value] || value;
+      } else if (field === 'workStyle') {
+        if (dom.settingWorkStyleValue) dom.settingWorkStyleValue.textContent = WORKSTYLE_DISPLAY[value] || value;
+        if (dom.workStyleBadge) dom.workStyleBadge.textContent = WORKSTYLE_DISPLAY[value] || value;
       }
 
       showToast('Updated!', 'success');
@@ -483,11 +482,11 @@
       });
     }
 
-    /* Goal picker */
-    if (dom.settingGoal) {
-      dom.settingGoal.addEventListener('click', function () { openPicker('goal'); });
-      dom.settingGoal.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPicker('goal'); }
+    /* Work Style picker */
+    if (dom.settingWorkStyle) {
+      dom.settingWorkStyle.addEventListener('click', function () { openPicker('workStyle'); });
+      dom.settingWorkStyle.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPicker('workStyle'); }
       });
     }
 
