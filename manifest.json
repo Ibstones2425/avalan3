@@ -1,0 +1,10 @@
+{
+  "name": "Avalan3",
+  "short_name": "Avalan3",
+  "description": "Your Web3 earning journey starts here",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0EA5E9",
+  "icons": []
+}

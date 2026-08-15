@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0EA5E9">
+  <meta name="description" content="Avalan3 Toolkit — Curated job boards, discovery sites, hashtags, search strings, and DM scripts for Web3 earning.">
+  <title>Toolkit — Avalan3</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages/explore.css">
+
+  <!-- Manifest -->
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Config (must load before Firebase init) -->
+  <script src="/js/config.js" defer></script>
+
+  <!-- Firebase CDN compat v10 -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js" defer></script>
+
+  <!-- App Scripts -->
+  <script src="/js/firebase-init.js" defer></script>
+  <script src="/js/auth-guard.js" defer></script>
+  <script src="/js/theme.js" defer></script>
+  <script src="/js/utils.js" defer></script>
+  <script src="/js/db.js" defer></script>
+  <script src="/js/pages/explore.js" defer></script>
+
+  <!-- Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function () {});
+      });
+    }
+  </script>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TOP BAR
+       ═══════════════════════════════════════════════════════════ -->
+  <header class="explore-topbar">
+    <div class="explore-topbar-inner">
+      <h1 class="explore-topbar-title">Toolkit</h1>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <!-- Moon icon (light mode) -->
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <!-- Sun icon (dark mode) -->
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TAB PILLS
+       ═══════════════════════════════════════════════════════════ -->
+  <nav class="tab-pills" aria-label="Toolkit sections">
+    <button class="tab-pill active" data-tab="jobs" type="button">Jobs</button>
+    <button class="tab-pill" data-tab="discover" type="button">Discover</button>
+    <button class="tab-pill" data-tab="hashtags" type="button">Hashtags</button>
+    <button class="tab-pill" data-tab="xsearch" type="button">X Search</button>
+    <button class="tab-pill" data-tab="dm" type="button">DM Scripts</button>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       MAIN CONTENT
+       ═══════════════════════════════════════════════════════════ -->
+  <main class="explore-main">
+
+    <!-- ──────────────────────────────────────────────────────────
+         JOBS TAB
+         ────────────────────────────────────────────────────────── -->
+    <section class="tab-panel active" id="panel-jobs" aria-label="Jobs">
+      <div class="job-list">
+
+        <!-- 1. CryptoJobsList -->
+        <div class="job-card">
+          <div class="job-card-header">
+            <span class="job-card-name">CryptoJobsList</span>
+            <span class="badge badge-cyan">HOTTEST</span>
+          </div>
+          <p class="job-card-desc">Most active Web3 job board — filter by Community, Marketing, Content</p>
+          <a class="job-card-link" href="https://cryptojobslist.com" target="_blank" rel="noopener noreferrer">
+            Open
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+
+        <!-- 2. LaborX -->
+        <div class="job-card">
+          <div class="job-card-header">
+            <span class="job-card-name">LaborX</span>
+            <span class="badge badge-purple">FREELANCE</span>
+          </div>
+          <p class="job-card-desc">Best for one-off gigs. Crypto-native. Pays in stablecoins.</p>
+          <a class="job-card-link" href="https://laborx.com" target="_blank" rel="noopener noreferrer">
+            Open
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+
+        <!-- 3. web3.career -->
+        <div class="job-card">
+          <div class="job-card-header">
+            <span class="job-card-name">web3.career</span>
+            <span class="badge badge-cyan">BEST PROFILE</span>
+          </div>
+          <p class="job-card-desc">Build a talent profile — hiring managers search for candidates</p>
+          <a class="job-card-link" href="https://web3.career" target="_blank" rel="noopener noreferrer">
+            Open
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+
+        <!-- 4. Superteam Earn -->
+        <div class="job-card">
+          <div class="job-card-header">
+            <span class="job-card-name">Superteam Earn</span>
+            <span class="badge badge-purple">BOUNTIES</span>
+          </div>
+          <p class="job-card-desc">Solana ecosystem bounties</p>
+          <a class="job-card-link" href="https://earn.superteam.fun" target="_blank" rel="noopener noreferrer">
+            Open
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+
+        <!-- 5. DAOmatch -->
+        <div class="job-card">
+          <div class="job-card-header">
+            <span class="job-card-name">DAOmatch</span>
+            <span class="badge badge-cyan">DAO ROLES</span>
+          </div>
+          <p class="job-card-desc">DAO-specific community and contributor roles</p>
+          <a class="job-card-link" href="https://daomatch.xyz" target="_blank" rel="noopener noreferrer">
+            Open
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+
+        <!-- 6. remote3.co -->
+        <div class="job-card">
+          <div class="job-card-header">
+            <span class="job-card-name">remote3.co</span>
+            <span class="badge badge-purple">REMOTE ONLY</span>
+          </div>
+          <p class="job-card-desc">Remote Web3 roles only</p>
+          <a class="job-card-link" href="https://remote3.co" target="_blank" rel="noopener noreferrer">
+            Open
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+
+        <!-- 7. BossJob -->
+        <div class="job-card">
+          <div class="job-card-header">
+            <span class="job-card-name">BossJob</span>
+            <span class="badge badge-cyan">GENERAL</span>
+          </div>
+          <p class="job-card-desc">Web3 + general remote work</p>
+          <a class="job-card-link" href="https://bossjob.com" target="_blank" rel="noopener noreferrer">
+            Open
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+
+        <!-- 8. ZipRecruiter Web3 -->
+        <div class="job-card">
+          <div class="job-card-header">
+            <span class="job-card-name">ZipRecruiter Web3</span>
+            <span class="badge badge-cyan">GENERAL</span>
+          </div>
+          <p class="job-card-desc">Web3 remote roles on ZipRecruiter</p>
+          <a class="job-card-link" href="https://ziprecruiter.com/Jobs/Remote-Web3" target="_blank" rel="noopener noreferrer">
+            Open
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+
+        <!-- 9. Braintrust -->
+        <div class="job-card">
+          <div class="job-card-header">
+            <span class="job-card-name">Braintrust</span>
+            <span class="badge badge-purple">FREELANCE</span>
+          </div>
+          <p class="job-card-desc">Zero-fee freelance marketplace</p>
+          <a class="job-card-link" href="https://usebraintrust.com" target="_blank" rel="noopener noreferrer">
+            Open
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+
+        <!-- 10. Wellfound -->
+        <div class="job-card">
+          <div class="job-card-header">
+            <span class="job-card-name">Wellfound</span>
+            <span class="badge badge-purple">STARTUPS</span>
+          </div>
+          <p class="job-card-desc">Startup roles — crypto/Web3 companies</p>
+          <a class="job-card-link" href="https://wellfound.com" target="_blank" rel="noopener noreferrer">
+            Open
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Strategy Tip -->
+      <div class="tip-card">
+        <div class="tip-card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        </div>
+        <div class="tip-card-content">
+          <strong>Strategy tip:</strong> Create profiles on web3.career and CryptoJobsList first — recruiters search these. Then set alerts on 3 boards max. Apply within 24h of posting for best response rates.
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────────────────────────────
+         DISCOVER TAB
+         ────────────────────────────────────────────────────────── -->
+    <section class="tab-panel" id="panel-discover" aria-label="Discover">
+
+      <!-- 1. CryptoRank -->
+      <div class="discover-card" data-discover>
+        <div class="discover-card-header" data-discover-toggle>
+          <div class="discover-card-title-row">
+            <span class="discover-card-name">CryptoRank</span>
+            <span class="badge badge-cyan">ALPHA SOURCE</span>
+          </div>
+          <p class="discover-card-why">Track fundraising rounds — find projects before they announce hiring</p>
+          <svg class="discover-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="discover-card-body">
+          <ol class="discover-steps">
+            <li>Open fundraising page</li>
+            <li>Filter Latest rounds</li>
+            <li>Click funded project</li>
+            <li>Find Twitter / Telegram / Discord</li>
+            <li>DM</li>
+          </ol>
+          <a class="discover-card-link" href="https://cryptorank.io/fundraising" target="_blank" rel="noopener noreferrer">
+            Open
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. DeFiLlama -->
+      <div class="discover-card" data-discover>
+        <div class="discover-card-header" data-discover-toggle>
+          <div class="discover-card-title-row">
+            <span class="discover-card-name">DeFiLlama</span>
+            <span class="badge badge-purple">RAISES TRACKER</span>
+          </div>
+          <p class="discover-card-why">See who raised what, how recently, and how much</p>
+          <svg class="discover-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="discover-card-body">
+          <ol class="discover-steps">
+            <li>Go to Raises page</li>
+            <li>Sort by most recent</li>
+            <li>Click project → find socials</li>
+            <li>Reach out to founding team</li>
+          </ol>
+          <a class="discover-card-link" href="https://defillama.com/raises" target="_blank" rel="noopener noreferrer">
+            Open
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 3. DexScreener -->
+      <div class="discover-card" data-discover>
+        <div class="discover-card-header" data-discover-toggle>
+          <div class="discover-card-title-row">
+            <span class="discover-card-name">DexScreener</span>
+            <span class="badge badge-cyan">MEMECOIN RADAR</span>
+          </div>
+          <p class="discover-card-why">Spot new pairs and memecoin launches early</p>
+          <svg class="discover-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="discover-card-body">
+          <ol class="discover-steps">
+            <li>Go to new pairs</li>
+            <li>Filter by chain (SOL, ETH, BASE)</li>
+            <li>Check liquidity &amp; volume</li>
+            <li>Find project socials</li>
+            <li>Engage or DM</li>
+          </ol>
+          <a class="discover-card-link" href="https://dexscreener.com/new-pairs" target="_blank" rel="noopener noreferrer">
+            Open
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 4. ICO Drops -->
+      <div class="discover-card" data-discover>
+        <div class="discover-card-header" data-discover-toggle>
+          <div class="discover-card-title-row">
+            <span class="discover-card-name">ICO Drops</span>
+            <span class="badge badge-purple">UPCOMING LAUNCHES</span>
+          </div>
+          <p class="discover-card-why">Track upcoming ICOs, IDOs, and token launches</p>
+          <svg class="discover-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="discover-card-body">
+          <ol class="discover-steps">
+            <li>Browse upcoming ICOs</li>
+            <li>Filter by active / upcoming</li>
+            <li>Click project → check social channels</li>
+            <li>Join community, engage, offer value</li>
+          </ol>
+          <a class="discover-card-link" href="https://icodrops.com" target="_blank" rel="noopener noreferrer">
+            Open
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 5. CoinMarketCap -->
+      <div class="discover-card" data-discover>
+        <div class="discover-card-header" data-discover-toggle>
+          <div class="discover-card-title-row">
+            <span class="discover-card-name">CoinMarketCap</span>
+            <span class="badge badge-cyan">RECENTLY ADDED</span>
+          </div>
+          <p class="discover-card-why">Newly listed tokens — fresh projects that may need talent</p>
+          <svg class="discover-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="discover-card-body">
+          <ol class="discover-steps">
+            <li>Go to Recently Added</li>
+            <li>Check listings from last 7 days</li>
+            <li>Visit project websites</li>
+            <li>Find team &amp; socials</li>
+            <li>Outreach</li>
+          </ol>
+          <a class="discover-card-link" href="https://coinmarketcap.com/new/" target="_blank" rel="noopener noreferrer">
+            Open
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 6. CoinGecko -->
+      <div class="discover-card" data-discover>
+        <div class="discover-card-header" data-discover-toggle>
+          <div class="discover-card-title-row">
+            <span class="discover-card-name">CoinGecko</span>
+            <span class="badge badge-purple">RECENTLY ADDED</span>
+          </div>
+          <p class="discover-card-why">Alternative view of newly listed coins and tokens</p>
+          <svg class="discover-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="discover-card-body">
+          <ol class="discover-steps">
+            <li>Go to Recently Added coins</li>
+            <li>Sort by date</li>
+            <li>Explore project pages</li>
+            <li>Check community links</li>
+          </ol>
+          <a class="discover-card-link" href="https://coingecko.com/en/coins/recently_added" target="_blank" rel="noopener noreferrer">
+            Open
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 7. DappRadar -->
+      <div class="discover-card" data-discover>
+        <div class="discover-card-header" data-discover-toggle>
+          <div class="discover-card-title-row">
+            <span class="discover-card-name">DappRadar</span>
+            <span class="badge badge-cyan">UPCOMING DAPPS</span>
+          </div>
+          <p class="discover-card-why">Discover dApps before they go mainstream</p>
+          <svg class="discover-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="discover-card-body">
+          <ol class="discover-steps">
+            <li>Browse dApp rankings</li>
+            <li>Filter by new / trending</li>
+            <li>Check volume &amp; user growth</li>
+            <li>Find project team &amp; socials</li>
+          </ol>
+          <a class="discover-card-link" href="https://dappradar.com" target="_blank" rel="noopener noreferrer">
+            Open
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 8. CoinDar -->
+      <div class="discover-card" data-discover>
+        <div class="discover-card-header" data-discover-toggle>
+          <div class="discover-card-title-row">
+            <span class="discover-card-name">CoinDar</span>
+            <span class="badge badge-purple">CALENDAR</span>
+          </div>
+          <p class="discover-card-why">Crypto event calendar — listings, airdrops, launches</p>
+          <svg class="discover-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="discover-card-body">
+          <ol class="discover-steps">
+            <li>Browse event calendar</li>
+            <li>Filter by upcoming listings</li>
+            <li>Research projects behind events</li>
+            <li>Engage early</li>
+          </ol>
+          <a class="discover-card-link" href="https://coindar.org" target="_blank" rel="noopener noreferrer">
+            Open
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Gem Sites Grid -->
+      <div class="gem-section">
+        <h3 class="gem-section-title">Gem Sites</h3>
+        <p class="gem-section-desc">Early coin discovery platforms</p>
+        <div class="gem-grid">
+          <a class="gem-chip" href="https://coinsniper.net" target="_blank" rel="noopener noreferrer">CoinSniper</a>
+          <a class="gem-chip" href="https://coinscope.co" target="_blank" rel="noopener noreferrer">CoinScope</a>
+          <a class="gem-chip" href="https://coinhunt.cc" target="_blank" rel="noopener noreferrer">CoinHunt</a>
+          <a class="gem-chip" href="https://coindiscovery.app" target="_blank" rel="noopener noreferrer">CoinDiscovery</a>
+          <a class="gem-chip" href="https://coinhunters.net" target="_blank" rel="noopener noreferrer">CoinHunters</a>
+          <a class="gem-chip" href="https://coinalpha.app" target="_blank" rel="noopener noreferrer">CoinAlpha</a>
+          <a class="gem-chip" href="https://coinvote.cc" target="_blank" rel="noopener noreferrer">CoinVote</a>
+          <a class="gem-chip" href="https://coinmooner.com" target="_blank" rel="noopener noreferrer">CoinMooner</a>
+          <a class="gem-chip" href="https://freshcoins.io" target="_blank" rel="noopener noreferrer">FreshCoins</a>
+          <a class="gem-chip" href="https://gemfinder.cc" target="_blank" rel="noopener noreferrer">GemFinder</a>
+          <a class="gem-chip" href="https://coinfair.io" target="_blank" rel="noopener noreferrer">CoinFair</a>
+          <a class="gem-chip" href="https://coinboom.io" target="_blank" rel="noopener noreferrer">CoinBoom</a>
+          <a class="gem-chip" href="https://coinmoonhunt.com" target="_blank" rel="noopener noreferrer">CoinMoonHunt</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────────────────────────────
+         HASHTAGS TAB
+         ────────────────────────────────────────────────────────── -->
+    <section class="tab-panel" id="panel-hashtags" aria-label="Hashtags">
+
+      <!-- Shill & Memecoins -->
+      <div class="hashtag-card">
+        <div class="hashtag-card-header">
+          <span class="hashtag-card-name">Shill &amp; Memecoins</span>
+          <button class="btn-copy-all" type="button" data-copy-all>Copy All</button>
+        </div>
+        <p class="hashtag-card-desc">For memecoin shilling, raiding, and community promo</p>
+        <div class="hashtag-chips">
+          <button class="hashtag-chip" data-hashtag="#memecoin">#memecoin</button>
+          <button class="hashtag-chip" data-hashtag="#solana">#solana</button>
+          <button class="hashtag-chip" data-hashtag="#ethereum">#ethereum</button>
+          <button class="hashtag-chip" data-hashtag="#bitcoin">#bitcoin</button>
+          <button class="hashtag-chip" data-hashtag="#pepe">#pepe</button>
+          <button class="hashtag-chip" data-hashtag="#doge">#doge</button>
+          <button class="hashtag-chip" data-hashtag="#wif">#wif</button>
+          <button class="hashtag-chip" data-hashtag="#bonk">#bonk</button>
+          <button class="hashtag-chip" data-hashtag="#degens">#degens</button>
+          <button class="hashtag-chip" data-hashtag="#crypto">#crypto</button>
+          <button class="hashtag-chip" data-hashtag="#altcoins">#altcoins</button>
+          <button class="hashtag-chip" data-hashtag="#shitcoin">#shitcoin</button>
+          <button class="hashtag-chip" data-hashtag="#pumpfun">#pumpfun</button>
+          <button class="hashtag-chip" data-hashtag="#raydium">#raydium</button>
+          <button class="hashtag-chip" data-hashtag="#jupiter">#jupiter</button>
+          <button class="hashtag-chip" data-hashtag="#basechain">#basechain</button>
+          <button class="hashtag-chip" data-hashtag="#sui">#sui</button>
+          <button class="hashtag-chip" data-hashtag="#aptos">#aptos</button>
+          <button class="hashtag-chip" data-hashtag="#airdrop">#airdrop</button>
+          <button class="hashtag-chip" data-hashtag="#farming">#farming</button>
+          <button class="hashtag-chip" data-hashtag="#tothemoon">#tothemoon</button>
+          <button class="hashtag-chip" data-hashtag="#hodl">#hodl</button>
+          <button class="hashtag-chip" data-hashtag="#bullrun">#bullrun</button>
+        </div>
+      </div>
+
+      <!-- Community & Jobs -->
+      <div class="hashtag-card">
+        <div class="hashtag-card-header">
+          <span class="hashtag-card-name">Community &amp; Jobs</span>
+          <button class="btn-copy-all" type="button" data-copy-all>Copy All</button>
+        </div>
+        <p class="hashtag-card-desc">For CM roles, community building, and job hunting</p>
+        <div class="hashtag-chips">
+          <button class="hashtag-chip" data-hashtag="#web3jobs">#web3jobs</button>
+          <button class="hashtag-chip" data-hashtag="#cryptojobs">#cryptojobs</button>
+          <button class="hashtag-chip" data-hashtag="#web3">#web3</button>
+          <button class="hashtag-chip" data-hashtag="#communitymanager">#communitymanager</button>
+          <button class="hashtag-chip" data-hashtag="#cm">#cm</button>
+          <button class="hashtag-chip" data-hashtag="#discordmanager">#discordmanager</button>
+          <button class="hashtag-chip" data-hashtag="#moderator">#moderator</button>
+          <button class="hashtag-chip" data-hashtag="#hiring">#hiring</button>
+          <button class="hashtag-chip" data-hashtag="#remotejobs">#remotejobs</button>
+          <button class="hashtag-chip" data-hashtag="#web3community">#web3community</button>
+          <button class="hashtag-chip" data-hashtag="#dao">#dao</button>
+          <button class="hashtag-chip" data-hashtag="#bounty">#bounty</button>
+          <button class="hashtag-chip" data-hashtag="#collab">#collab</button>
+        </div>
+      </div>
+
+      <!-- DeFi & RWA -->
+      <div class="hashtag-card">
+        <div class="hashtag-card-header">
+          <span class="hashtag-card-name">DeFi &amp; RWA</span>
+          <button class="btn-copy-all" type="button" data-copy-all>Copy All</button>
+        </div>
+        <p class="hashtag-card-desc">DeFi protocols, real-world assets, and lending</p>
+        <div class="hashtag-chips">
+          <button class="hashtag-chip" data-hashtag="#defi">#defi</button>
+          <button class="hashtag-chip" data-hashtag="#rwa">#rwa</button>
+          <button class="hashtag-chip" data-hashtag="#lending">#lending</button>
+          <button class="hashtag-chip" data-hashtag="#staking">#staking</button>
+          <button class="hashtag-chip" data-hashtag="#yieldfarming">#yieldfarming</button>
+          <button class="hashtag-chip" data-hashtag="#liquidity">#liquidity</button>
+          <button class="hashtag-chip" data-hashtag="#dex">#dex</button>
+          <button class="hashtag-chip" data-hashtag="#amm">#amm</button>
+          <button class="hashtag-chip" data-hashtag="#perps">#perps</button>
+          <button class="hashtag-chip" data-hashtag="#bridge">#bridge</button>
+          <button class="hashtag-chip" data-hashtag="#layer2">#layer2</button>
+          <button class="hashtag-chip" data-hashtag="#rollup">#rollup</button>
+          <button class="hashtag-chip" data-hashtag="#tokenization">#tokenization</button>
+          <button class="hashtag-chip" data-hashtag="#stablecoin">#stablecoin</button>
+          <button class="hashtag-chip" data-hashtag="#gmx">#gmx</button>
+          <button class="hashtag-chip" data-hashtag="#aave">#aave</button>
+          <button class="hashtag-chip" data-hashtag="#uniswap">#uniswap</button>
+          <button class="hashtag-chip" data-hashtag="#makerdao">#makerdao</button>
+          <button class="hashtag-chip" data-hashtag="#compound">#compound</button>
+        </div>
+      </div>
+
+      <!-- AI × Web3 -->
+      <div class="hashtag-card">
+        <div class="hashtag-card-header">
+          <span class="hashtag-card-name">AI &times; Web3</span>
+          <button class="btn-copy-all" type="button" data-copy-all>Copy All</button>
+        </div>
+        <p class="hashtag-card-desc">AI + crypto intersection projects</p>
+        <div class="hashtag-chips">
+          <button class="hashtag-chip" data-hashtag="#ai">#ai</button>
+          <button class="hashtag-chip" data-hashtag="#aiweb3">#aiweb3</button>
+          <button class="hashtag-chip" data-hashtag="#cryptoai">#cryptoai</button>
+          <button class="hashtag-chip" data-hashtag="#deeplearning">#deeplearning</button>
+          <button class="hashtag-chip" data-hashtag="#machinelearning">#machinelearning</button>
+          <button class="hashtag-chip" data-hashtag="#llm">#llm</button>
+          <button class="hashtag-chip" data-hashtag="#agents">#agents</button>
+          <button class="hashtag-chip" data-hashtag="#aiagents">#aiagents</button>
+          <button class="hashtag-chip" data-hashtag="#compute">#compute</button>
+          <button class="hashtag-chip" data-hashtag="#depin">#depin</button>
+          <button class="hashtag-chip" data-hashtag="#render">#render</button>
+        </div>
+      </div>
+
+      <!-- Events & Hackathons -->
+      <div class="hashtag-card">
+        <div class="hashtag-card-header">
+          <span class="hashtag-card-name">Events &amp; Hackathons</span>
+          <button class="btn-copy-all" type="button" data-copy-all>Copy All</button>
+        </div>
+        <p class="hashtag-card-desc">Conferences, hackathons, and events</p>
+        <div class="hashtag-chips">
+          <button class="hashtag-chip" data-hashtag="#hackathon">#hackathon</button>
+          <button class="hashtag-chip" data-hashtag="#web3hackathon">#web3hackathon</button>
+          <button class="hashtag-chip" data-hashtag="#ethdenver">#ethdenver</button>
+          <button class="hashtag-chip" data-hashtag="#ethcc">#ethcc</button>
+          <button class="hashtag-chip" data-hashtag="#devcon">#devcon</button>
+          <button class="hashtag-chip" data-hashtag="#token2049">#token2049</button>
+          <button class="hashtag-chip" data-hashtag="#nftnyc">#nftnyc</button>
+          <button class="hashtag-chip" data-hashtag="#kbw">#kbw</button>
+          <button class="hashtag-chip" data-hashtag="#solanaconf">#solanaconf</button>
+          <button class="hashtag-chip" data-hashtag="#breakpoint">#breakpoint</button>
+          <button class="hashtag-chip" data-hashtag="#btcconf">#btcconf</button>
+          <button class="hashtag-chip" data-hashtag="#conferenceseason">#conferenceseason</button>
+        </div>
+      </div>
+
+      <!-- Growth & Airdrop -->
+      <div class="hashtag-card">
+        <div class="hashtag-card-header">
+          <span class="hashtag-card-name">Growth &amp; Airdrop</span>
+          <button class="btn-copy-all" type="button" data-copy-all>Copy All</button>
+        </div>
+        <p class="hashtag-card-desc">Airdrop farming, growth, and marketing</p>
+        <div class="hashtag-chips">
+          <button class="hashtag-chip" data-hashtag="#airdropfarming">#airdropfarming</button>
+          <button class="hashtag-chip" data-hashtag="#testnet">#testnet</button>
+          <button class="hashtag-chip" data-hashtag="#mainnet">#mainnet</button>
+          <button class="hashtag-chip" data-hashtag="#points">#points</button>
+          <button class="hashtag-chip" data-hashtag="#quests">#quests</button>
+          <button class="hashtag-chip" data-hashtag="#galxe">#galxe</button>
+          <button class="hashtag-chip" data-hashtag="#zealy">#zealy</button>
+          <button class="hashtag-chip" data-hashtag="#layer3">#layer3</button>
+        </div>
+      </div>
+
+      <!-- Hashtag Rule Card -->
+      <div class="tip-card">
+        <div class="tip-card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="tip-card-content">
+          <strong>Hashtag rule:</strong> Use 3–5 hashtags per post. Mix broad (#crypto, #web3) with niche (#memecoin, #solana). Never use all 23 at once — X algorithm will throttle your reach.
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────────────────────────────
+         X SEARCH TAB
+         ────────────────────────────────────────────────────────── -->
+    <section class="tab-panel" id="panel-xsearch" aria-label="X Search">
+
+      <!-- FIND COLLABORATION REQUESTS -->
+      <div class="xsearch-group">
+        <h3 class="xsearch-group-title">Find Collaboration Requests</h3>
+        <div class="xsearch-items">
+          <div class="xsearch-item">
+            <code class="xsearch-code">"looking for" "community manager" crypto</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22looking+for%22+%22community+manager%22+crypto" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"hiring" "content creator" web3</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22hiring%22+%22content+creator%22+web3" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"need help" "moderator" discord crypto</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22need+help%22+%22moderator%22+discord+crypto" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"looking for" "shiller" memecoin</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22looking+for%22+%22shiller%22+memecoin" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"hiring" "community" "remote" crypto</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22hiring%22+%22community%22+%22remote%22+crypto" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"looking for" "raider" crypto project</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22looking+for%22+%22raider%22+crypto+project" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"need" "ambassador" web3 project</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22need%22+%22ambassador%22+web3+project" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FIND PROJECTS HIRING -->
+      <div class="xsearch-group">
+        <h3 class="xsearch-group-title">Find Projects Hiring</h3>
+        <div class="xsearch-items">
+          <div class="xsearch-item">
+            <code class="xsearch-code">"we're hiring" crypto</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22we%27re+hiring%22+crypto" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"job opening" web3 remote</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22job+opening%22+web3+remote" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"hiring" "community lead" crypto</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22hiring%22+%22community+lead%22+crypto" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"open role" "marketing" web3</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22open+role%22+%22marketing%22+web3" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"now hiring" "content" crypto</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22now+hiring%22+%22content%22+crypto" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"join our team" crypto startup</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22join+our+team%22+crypto+startup" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FIND PRE-LAUNCH OPPORTUNITIES -->
+      <div class="xsearch-group">
+        <h3 class="xsearch-group-title">Find Pre-Launch Opportunities</h3>
+        <div class="xsearch-items">
+          <div class="xsearch-item">
+            <code class="xsearch-code">"launching soon" crypto project</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22launching+soon%22+crypto+project" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"presale" memecoin solana</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22presale%22+memecoin+solana" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"coming soon" web3 platform</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22coming+soon%22+web3+platform" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"just funded" crypto startup</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22just+funded%22+crypto+startup" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"seed round" crypto 2025</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22seed+round%22+crypto+2025" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FIND MEMECOIN OPPORTUNITIES -->
+      <div class="xsearch-group">
+        <h3 class="xsearch-group-title">Find Memecoin Opportunities</h3>
+        <div class="xsearch-items">
+          <div class="xsearch-item">
+            <code class="xsearch-code">"just launched" memecoin</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22just+launched%22+memecoin" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"new token" solana "liquidity added"</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22new+token%22+solana+%22liquidity+added%22" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"pump.fun" "just launched"</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22pump.fun%22+%22just+launched%22" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"looking for shillers" memecoin</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22looking+for+shillers%22+memecoin" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+          <div class="xsearch-item">
+            <code class="xsearch-code">"hiring" "raider" memecoin project</code>
+            <div class="xsearch-actions">
+              <button class="btn-xsearch-copy" type="button" data-xsearch-copy>Copy</button>
+              <a class="btn-xsearch-open" href="https://x.com/search?q=%22hiring%22+%22raider%22+memecoin+project" target="_blank" rel="noopener noreferrer">Search ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CryptoRank Workflow Card -->
+      <div class="tip-card">
+        <div class="tip-card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="tip-card-content">
+          <strong>CryptoRank Workflow:</strong> Use these search strings daily. Sort by Latest. DM within 2 hours of a post for best reply rates. Save 3–5 searches and check them every morning.
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────────────────────────────
+         DM SCRIPTS TAB
+         ────────────────────────────────────────────────────────── -->
+    <section class="tab-panel" id="panel-dm" aria-label="DM Scripts">
+
+      <!-- Template 1: Cold Outreach — Memecoin Project -->
+      <div class="dm-card">
+        <div class="dm-card-header">
+          <span class="dm-card-title">Cold Outreach — Memecoin Project</span>
+          <button class="btn-dm-copy" type="button" data-dm-copy>Copy</button>
+        </div>
+        <pre class="dm-card-message">Hey [Name], just saw [Project] — really like what you're building. I've been running raids and growing memecoin communities (last one hit [X] members in [Y] weeks).
+
+Would love to help [Project] get more visibility. Happy to do a test run so you can see the results first.
+
+Cheers</pre>
+        <a class="dm-card-ai" href="/ai-guide.html">Personalise with AI →</a>
+      </div>
+
+      <!-- Template 2: CM Application — Post-Fundraise -->
+      <div class="dm-card">
+        <div class="dm-card-header">
+          <span class="dm-card-title">CM Application — Post-Fundraise</span>
+          <button class="btn-dm-copy" type="button" data-dm-copy>Copy</button>
+        </div>
+        <pre class="dm-card-message">Hey [Name], congrats on the [round]! Big momentum for [Project].
+
+I'm a community manager — I specialise in building Discord/Telegram from zero to active. Last project I ran hit [X] DAU in [Y] months.
+
+If you're building out the community team, I'd love to chat. Can share my track record and ideas for [Project] specifically.
+
+Best</pre>
+        <a class="dm-card-ai" href="/ai-guide.html">Personalise with AI →</a>
+      </div>
+
+      <!-- Template 3: Raid / Shill Service Offer -->
+      <div class="dm-card">
+        <div class="dm-card-header">
+          <span class="dm-card-title">Raid / Shill Service Offer</span>
+          <button class="btn-dm-copy" type="button" data-dm-copy>Copy</button>
+        </div>
+        <pre class="dm-card-message">Hey [Name], I run a raid/shill crew for memecoin projects. We specialise in getting posts trending and driving engagement.
+
+For [Project], I can:
+• Run daily raids on X (50+ engagements per post)
+• Shill in relevant Telegram/Discord groups
+• Coordinate with KOLs for retweets
+
+Happy to do a free 24h test so you can see the numbers. Let me know if you're interested.
+
+Thanks</pre>
+        <a class="dm-card-ai" href="/ai-guide.html">Personalise with AI →</a>
+      </div>
+
+      <!-- Template 4: Content Creator Pitch -->
+      <div class="dm-card">
+        <div class="dm-card-header">
+          <span class="dm-card-title">Content Creator Pitch</span>
+          <button class="btn-dm-copy" type="button" data-dm-copy>Copy</button>
+        </div>
+        <pre class="dm-card-message">Hey [Name], I create Web3 content — threads, short-form video, and explainers that actually get engagement.
+
+I've been following [Project] and I think there's a big opportunity for content that breaks down what you're building for a wider audience.
+
+I can produce:
+• Weekly X threads (avg [X] impressions)
+• Short-form video for TikTok/Reels
+• Discord AMA hosting
+
+Would love to discuss a content partnership. Here's my portfolio: [link]
+
+Best</pre>
+        <a class="dm-card-ai" href="/ai-guide.html">Personalise with AI →</a>
+      </div>
+
+      <!-- DM Rules Card -->
+      <div class="tip-card">
+        <div class="tip-card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="tip-card-content">
+          <strong>DM rules:</strong> Always personalise — never send a template as-is. Replace [Name], [Project], and add real numbers. Keep it under 150 words. Don't pitch in the first message if you can build rapport first. Wait 48h before follow-up.
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       BOTTOM NAV
+       ═══════════════════════════════════════════════════════════ -->
+  <nav class="bottom-nav" aria-label="Main navigation">
+    <a class="bottom-nav-item" href="/" aria-label="Home">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </a>
+    <a class="bottom-nav-item" href="/journey.html" aria-label="Journey">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>Journey</span>
+    </a>
+    <a class="bottom-nav-item active" href="/explore.html" aria-label="Explore">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Explore</span>
+    </a>
+    <a class="bottom-nav-item" href="/ai-guide.html" aria-label="AI">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/><path d="M12 18v4"/><path d="M8 18h8"/><path d="M6 10a6 6 0 0 0 12 0"/></svg>
+      <span>AI</span>
+    </a>
+    <a class="bottom-nav-item" href="/tracker.html" aria-label="Tracker">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L6 3l-3 9H2"/></svg>
+      <span>Tracker</span>
+    </a>
+  </nav>
+
+</body>
+</html>

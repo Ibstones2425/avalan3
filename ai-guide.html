@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0EA5E9">
+  <meta name="description" content="Avalan3 AI Guide — Your sharp, practical Web3 earning advisor. Powered by Gemini or Grok.">
+  <title>AI Guide — Avalan3</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages/ai-guide.css">
+
+  <!-- Manifest -->
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Config (must load before Firebase init) -->
+  <script src="/js/config.js" defer></script>
+
+  <!-- Firebase CDN compat v10 -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js" defer></script>
+
+  <!-- App Scripts -->
+  <script src="/js/firebase-init.js" defer></script>
+  <script src="/js/auth-guard.js" defer></script>
+  <script src="/js/theme.js" defer></script>
+  <script src="/js/utils.js" defer></script>
+  <script src="/js/db.js" defer></script>
+  <script src="/js/ai.js" defer></script>
+  <script src="/js/search.js" defer></script>
+  <script src="/js/pages/ai-guide.js" defer></script>
+
+  <!-- Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function () {});
+      });
+    }
+  </script>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TOP BAR
+       ═══════════════════════════════════════════════════════════ -->
+  <header class="ai-topbar">
+    <div class="ai-topbar-inner">
+      <div class="ai-topbar-left">
+        <h1 class="ai-topbar-title">AI Guide</h1>
+        <span class="ai-provider-badge" id="provider-badge">Gemini</span>
+      </div>
+      <div class="ai-topbar-right">
+        <!-- Web Search Toggle -->
+        <button class="ai-icon-btn" id="btn-search-toggle" type="button" aria-label="Toggle web search" title="Toggle web search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <svg class="search-wifi-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+            <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+            <line x1="12" y1="18" x2="12.01" y2="18"/>
+          </svg>
+        </button>
+        <!-- Settings -->
+        <button class="ai-icon-btn" id="btn-settings" type="button" aria-label="Open settings">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       CHAT AREA
+       ═══════════════════════════════════════════════════════════ -->
+  <main class="ai-chat-area" id="chat-area">
+    <!-- Suggested Prompts (shown when chat is empty) -->
+    <div class="ai-suggested" id="suggested-prompts">
+      <div class="ai-suggested-header">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+        <span>Try asking</span>
+      </div>
+      <div class="ai-suggested-chips">
+        <button class="ai-prompt-chip" type="button" data-prompt="Find 3 funded projects I can approach today">Find 3 funded projects I can approach today</button>
+        <button class="ai-prompt-chip" type="button" data-prompt="Rewrite my DM for a community manager role">Rewrite my DM for a community manager role</button>
+        <button class="ai-prompt-chip" type="button" data-prompt="What should I post today to attract Web3 projects?">What should I post today to attract Web3 projects?</button>
+        <button class="ai-prompt-chip" type="button" data-prompt="Explain what a Community Manager actually does day-to-day">Explain what a Community Manager actually does day-to-day</button>
+        <button class="ai-prompt-chip" type="button" data-prompt="Which hashtags should I use for my lane content?">Which hashtags should I use for my lane content?</button>
+        <button class="ai-prompt-chip" type="button" data-prompt="Research a project and tell me if they're hiring">Research a project and tell me if they're hiring</button>
+      </div>
+    </div>
+
+    <!-- Message List -->
+    <div class="ai-messages" id="message-list">
+      <!-- Skeleton loading (shown during initial load) -->
+      <div class="ai-skeleton" id="skeleton-loader">
+        <div class="ai-skeleton-row"><div class="ai-skeleton-bubble ai-skeleton-ai"></div></div>
+        <div class="ai-skeleton-row ai-skeleton-right"><div class="ai-skeleton-bubble ai-skeleton-user"></div></div>
+        <div class="ai-skeleton-row"><div class="ai-skeleton-bubble ai-skeleton-ai ai-skeleton-wide"></div></div>
+        <div class="ai-skeleton-row ai-skeleton-right"><div class="ai-skeleton-bubble ai-skeleton-user ai-skeleton-med"></div></div>
+        <div class="ai-skeleton-row"><div class="ai-skeleton-bubble ai-skeleton-ai ai-skeleton-wide"></div></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       INPUT AREA
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="ai-input-area" id="input-area">
+    <!-- Web search indicator -->
+    <div class="ai-search-indicator" id="search-indicator" style="display:none;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <span>Search ON</span>
+    </div>
+    <div class="ai-input-row">
+      <input
+        type="text"
+        class="ai-input"
+        id="chat-input"
+        placeholder="Ask anything about Web3 earning..."
+        autocomplete="off"
+        aria-label="Type your message"
+      />
+      <button class="ai-send-btn" id="btn-send" type="button" disabled aria-label="Send message">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 21 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SETTINGS DRAWER
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="ai-drawer-overlay" id="drawer-overlay"></div>
+  <aside class="ai-drawer" id="settings-drawer" aria-hidden="true" role="dialog" aria-label="AI Guide Settings">
+    <div class="ai-drawer-handle"></div>
+    <div class="ai-drawer-header">
+      <h2 class="ai-drawer-title">Settings</h2>
+      <button class="ai-drawer-close" id="btn-drawer-close" type="button" aria-label="Close settings">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="ai-drawer-body">
+      <!-- Provider Toggle -->
+      <div class="ai-settings-group">
+        <label class="ai-settings-label">AI Provider</label>
+        <div class="ai-provider-toggle" id="provider-toggle" role="radiogroup" aria-label="AI Provider">
+          <button class="ai-provider-option active" data-provider="gemini" type="button" role="radio" aria-checked="true">
+            <!-- Gemini icon (sparkle) -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L9 9l-7 3 7 3 3 7 3-7 7-3-7-3z"/>
+            </svg>
+            <span>Gemini</span>
+          </button>
+          <button class="ai-provider-option" data-provider="grok" type="button" role="radio" aria-checked="false">
+            <!-- Grok icon (bolt) -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+            <span>Grok</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Web Search Toggle -->
+      <div class="ai-settings-group">
+        <label class="ai-settings-label">Web Search</label>
+        <div class="ai-settings-row">
+          <span class="ai-settings-desc">Search the web before AI responds</span>
+          <button class="ai-toggle" id="toggle-web-search" type="button" role="switch" aria-checked="false" aria-label="Toggle web search">
+            <span class="ai-toggle-track">
+              <span class="ai-toggle-thumb"></span>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Clear Chat History -->
+      <div class="ai-settings-group ai-settings-group-danger">
+        <label class="ai-settings-label">Chat History</label>
+        <button class="ai-clear-btn" id="btn-clear-chat" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+          </svg>
+          <span>Clear Chat History</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       CLEAR CONFIRM MODAL
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="ai-modal-overlay" id="confirm-modal-overlay" style="display:none;">
+    <div class="ai-modal" role="dialog" aria-label="Confirm clear chat">
+      <h3 class="ai-modal-title">Clear all messages?</h3>
+      <p class="ai-modal-desc">This will permanently delete your chat history. This action cannot be undone.</p>
+      <div class="ai-modal-actions">
+        <button class="ai-modal-cancel" id="btn-confirm-cancel" type="button">Cancel</button>
+        <button class="ai-modal-confirm" id="btn-confirm-clear" type="button">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       BOTTOM NAV
+       ═══════════════════════════════════════════════════════════ -->
+  <nav class="bottom-nav" aria-label="Main navigation">
+    <a class="bottom-nav-item" href="/" aria-label="Home">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </a>
+    <a class="bottom-nav-item" href="/journey.html" aria-label="Journey">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>Journey</span>
+    </a>
+    <a class="bottom-nav-item" href="/explore.html" aria-label="Explore">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Explore</span>
+    </a>
+    <a class="bottom-nav-item active" href="/ai-guide.html" aria-label="AI">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/><path d="M12 18v4"/><path d="M8 18h8"/><path d="M6 10a6 6 0 0 0 12 0"/></svg>
+      <span>AI</span>
+    </a>
+    <a class="bottom-nav-item" href="/tracker.html" aria-label="Tracker">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L6 3l-3 9H2"/></svg>
+      <span>Tracker</span>
+    </a>
+  </nav>
+
+  <!-- Toast container -->
+  <div class="ai-toast" id="ai-toast" role="status" aria-live="polite"></div>
+
+</body>
+</html>

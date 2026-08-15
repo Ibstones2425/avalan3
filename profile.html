@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="Avalan3 — Your profile & settings">
+  <title>Avalan3 — Profile</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages/profile.css">
+
+  <!-- Manifest -->
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Config -->
+  <script src="/js/config.js" defer></script>
+
+  <!-- Firebase CDN compat v10 -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js" defer></script>
+
+  <!-- App Scripts -->
+  <script src="/js/firebase-init.js" defer></script>
+  <script src="/js/auth-guard.js" defer></script>
+  <script src="/js/theme.js" defer></script>
+  <script src="/js/utils.js" defer></script>
+  <script src="/js/db.js" defer></script>
+  <script src="/js/pages/profile.js" defer></script>
+</head>
+<body>
+  <div class="profile-shell">
+
+    <!-- ===== TOP BAR ===== -->
+    <header class="top-bar">
+      <h1 class="top-bar__title">Profile</h1>
+      <button class="theme-toggle" type="button" aria-label="Toggle theme" onclick="A3.toggleTheme()">
+        <svg class="icon-moon" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <path d="M15.75 9.75A6.75 6.75 0 117.25 1.25a5.25 5.25 0 008.5 8.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="icon-sun" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <circle cx="9" cy="9" r="3.75" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M9 1.5v1.5M9 15v1.5M1.5 9h1.5M15 9h1.5M3.87 3.87l1.06 1.06M13.07 13.07l1.06 1.06M3.87 14.13l1.06-1.06M13.07 4.93l1.06-1.06" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- ===== SCROLLABLE CONTENT ===== -->
+    <main class="profile-content">
+
+      <!-- PROFILE HEADER CARD -->
+      <section class="card profile-header" aria-label="Profile information">
+        <div class="profile-header__avatar" id="profile-avatar">
+          <!-- JS will render photo or initials -->
+        </div>
+        <h2 class="profile-header__name" id="profile-display-name">Loading…</h2>
+        <div class="profile-header__badges">
+          <span class="badge badge-cyan" id="profile-lane-badge">Lane</span>
+          <span class="badge badge-purple" id="profile-stage-badge">Stage 0</span>
+        </div>
+        <p class="profile-header__meta" id="profile-member-since">Member since —</p>
+      </section>
+
+      <!-- ═══ MY PROFILE ═══ -->
+      <section class="profile-section" aria-label="My profile settings">
+        <h3 class="section-label">MY PROFILE</h3>
+
+        <!-- Edit Display Name -->
+        <div class="setting-row" id="setting-display-name">
+          <div class="setting-row__info">
+            <span class="setting-row__label">Display Name</span>
+            <span class="setting-row__value" id="setting-display-name-value">—</span>
+          </div>
+          <button class="setting-row__action" type="button" aria-label="Edit display name" id="btn-edit-name">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M11.33 2.33a1.89 1.89 0 012.67 2.67L5 14H2v-3l9.33-8.67z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <!-- Inline edit input (hidden by default) -->
+        <div class="setting-edit" id="edit-display-name" hidden>
+          <input class="setting-edit__input" id="input-display-name" type="text" maxlength="40" placeholder="Your display name" autocomplete="off">
+          <button class="setting-edit__save" id="btn-save-name" type="button">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="setting-edit__cancel" id="btn-cancel-name" type="button">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M3.5 3.5l7 7M10.5 3.5l-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Lane picker -->
+        <div class="setting-row setting-row--interactive" id="setting-lane" tabindex="0" role="button" aria-label="Change lane">
+          <div class="setting-row__info">
+            <span class="setting-row__label">Lane</span>
+            <span class="setting-row__value" id="setting-lane-value">—</span>
+          </div>
+          <svg class="setting-row__chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <!-- Goal picker -->
+        <div class="setting-row setting-row--interactive" id="setting-goal" tabindex="0" role="button" aria-label="Change goal">
+          <div class="setting-row__info">
+            <span class="setting-row__label">Goal</span>
+            <span class="setting-row__value" id="setting-goal-value">—</span>
+          </div>
+          <svg class="setting-row__chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </section>
+
+      <!-- ═══ ACCOUNT ═══ -->
+      <section class="profile-section" aria-label="Account settings">
+        <h3 class="section-label">ACCOUNT</h3>
+
+        <div class="setting-row">
+          <div class="setting-row__info">
+            <span class="setting-row__label">Email</span>
+            <span class="setting-row__value" id="setting-email-value">—</span>
+          </div>
+        </div>
+
+        <div class="setting-row setting-row--interactive" id="setting-change-password" tabindex="0" role="button" aria-label="Change password">
+          <div class="setting-row__info">
+            <span class="setting-row__label">Change Password</span>
+            <span class="setting-row__value setting-row__value--hint">Send reset email</span>
+          </div>
+          <svg class="setting-row__chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </section>
+
+      <!-- ═══ AI SETTINGS ═══ -->
+      <section class="profile-section" aria-label="AI settings">
+        <h3 class="section-label">AI SETTINGS</h3>
+
+        <div class="setting-row">
+          <div class="setting-row__info">
+            <span class="setting-row__label">AI Provider</span>
+          </div>
+          <div class="ai-toggle" id="ai-provider-toggle" role="radiogroup" aria-label="AI provider selection">
+            <button class="ai-toggle__option ai-toggle__option--active" data-provider="gemini" type="button" role="radio" aria-checked="true">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M7 1l1.5 3L12 5l-3 1.5L7 13 5.5 6.5 2 5l3.5-1L7 1z" fill="currentColor"/>
+              </svg>
+              Gemini
+            </button>
+            <button class="ai-toggle__option" data-provider="grok" type="button" role="radio" aria-checked="false">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M2 2h4v4H2zM8 2h4v4H8zM2 8h4v4H2zM8 8h4v4H8z" stroke="currentColor" stroke-width="1.2" rx="1"/>
+              </svg>
+              Grok
+            </button>
+          </div>
+        </div>
+        <p class="ai-description" id="ai-description">Gemini — Fast, helpful AI by Google. Great for research & writing.</p>
+      </section>
+
+      <!-- ═══ APPEARANCE ═══ -->
+      <section class="profile-section" aria-label="Appearance settings">
+        <h3 class="section-label">APPEARANCE</h3>
+
+        <div class="setting-row">
+          <div class="setting-row__info">
+            <span class="setting-row__label">Theme</span>
+          </div>
+          <div class="theme-switch" id="theme-switch" role="radiogroup" aria-label="Theme selection">
+            <button class="theme-switch__option" data-theme-val="light" type="button" role="radio" aria-checked="false">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <circle cx="7" cy="7" r="2.75" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M7 1.5v1M7 11.5v1M1.5 7h1M11.5 7h1M3.3 3.3l.7.7M10 10l.7.7M3.3 10.7l.7-.7M10 4l.7-.7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+              Light
+            </button>
+            <button class="theme-switch__option theme-switch__option--active" data-theme-val="dark" type="button" role="radio" aria-checked="true">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M12 8.5A5.25 5.25 0 115.5 1a4.08 4.08 0 006.5 7.5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Dark
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ DANGER ZONE ═══ -->
+      <section class="profile-section profile-section--danger" aria-label="Danger zone">
+        <h3 class="section-label section-label--danger">DANGER ZONE</h3>
+
+        <button class="btn btn-md btn-outline danger-btn" id="btn-sign-out" type="button">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M6 14H3a1 1 0 01-1-1V3a1 1 0 011-1h3M11 11l3-3-3-3M14 8H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Sign Out
+        </button>
+
+        <button class="danger-text-btn" id="btn-delete-account" type="button">Delete Account</button>
+      </section>
+
+    </main>
+
+    <!-- ===== BOTTOM NAVIGATION ===== -->
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <a href="/dashboard.html" class="nav-item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Home</span>
+      </a>
+      <a href="/journey.html" class="nav-item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Journey</span>
+      </a>
+      <a href="/explore.html" class="nav-item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M16.24 7.76l-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Explore</span>
+      </a>
+      <a href="/ai-guide.html" class="nav-item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>AI</span>
+      </a>
+      <a href="/tracker.html" class="nav-item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M9 11l3 3L22 4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke-linecap="round"/>
+        </svg>
+        <span>Tracker</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <!-- ===== PICKER SHEET (Lane / Goal) ===== -->
+  <div class="picker-overlay" id="picker-overlay" hidden>
+    <div class="picker-sheet" id="picker-sheet" role="dialog" aria-modal="true">
+      <div class="picker-sheet__header">
+        <h4 class="picker-sheet__title" id="picker-title">Select</h4>
+        <button class="picker-sheet__close" id="picker-close" type="button" aria-label="Close picker">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M4.5 4.5l9 9M13.5 4.5l-9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="picker-sheet__options" id="picker-options">
+        <!-- JS populates options -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DELETE CONFIRMATION MODAL ===== -->
+  <div class="modal-overlay" id="delete-modal" hidden>
+    <div class="modal-card" role="alertdialog" aria-modal="true" aria-labelledby="delete-modal-title">
+      <div class="modal-card__icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <path d="M16 4L3 28h26L16 4z" fill="var(--status-error)" opacity=".15"/>
+          <path d="M16 14v5M16 22v1" stroke="var(--status-error)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h4 class="modal-card__title" id="delete-modal-title">Delete your account?</h4>
+      <p class="modal-card__body">This will permanently delete your profile, journey progress, tracker data, and chat history. This action cannot be undone.</p>
+      <div class="modal-card__actions">
+        <button class="btn btn-md btn-outline" id="btn-delete-cancel" type="button">Cancel</button>
+        <button class="btn btn-md btn-danger" id="btn-delete-confirm" type="button">Delete Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function () {});
+      });
+    }
+  </script>
+</body>
+</html>

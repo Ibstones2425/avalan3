@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Tracker — Avalan3</title>
+  <meta name="description" content="Track your outreach activity. Measure what's working and build momentum.">
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages/tracker.css">
+
+  <!-- Manifest -->
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Config (must load before Firebase init) -->
+  <script src="/js/config.js" defer></script>
+
+  <!-- Firebase CDN compat v10 -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js" defer></script>
+
+  <!-- App scripts (defer, order matters) -->
+  <script src="/js/firebase-init.js" defer></script>
+  <script src="/js/auth-guard.js" defer></script>
+  <script src="/js/theme.js" defer></script>
+  <script src="/js/utils.js" defer></script>
+  <script src="/js/db.js" defer></script>
+  <script src="/js/pages/tracker.js" defer></script>
+
+  <!-- Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
+  </script>
+</head>
+<body class="tracker-page">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TOP BAR
+       ═══════════════════════════════════════════════════════════ -->
+  <header class="tracker-topbar">
+    <h1 class="tracker-topbar__title">Tracker</h1>
+    <button id="btn-add-entry" class="tracker-topbar__action" type="button" aria-label="Add Entry">
+      <!-- Plus icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      <span>Add Entry</span>
+    </button>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       MAIN CONTENT
+       ═══════════════════════════════════════════════════════════ -->
+  <main>
+
+    <!-- Loading skeleton -->
+    <div id="tracker-skeleton" class="tracker-skeleton">
+      <div class="skeleton-stats">
+        <div class="skeleton-stat-tile"></div>
+        <div class="skeleton-stat-tile"></div>
+        <div class="skeleton-stat-tile"></div>
+        <div class="skeleton-stat-tile"></div>
+      </div>
+      <div class="skeleton-chart"></div>
+      <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton-circle"></div><div class="skeleton-lines"><div class="skeleton-line"></div><div class="skeleton-line"></div></div></div>
+    </div>
+
+    <!-- Tracker content (rendered by tracker.js) -->
+    <div id="tracker-content" class="tracker-content" style="display:none;">
+
+      <!-- Stats Row -->
+      <div class="tracker-stats">
+        <div class="tracker-stat">
+          <span id="stat-dms" class="tracker-stat__value">0</span>
+          <span class="tracker-stat__label">DMs Sent</span>
+        </div>
+        <div class="tracker-stat">
+          <span id="stat-replies" class="tracker-stat__value">0</span>
+          <span class="tracker-stat__label">Replies</span>
+        </div>
+        <div class="tracker-stat">
+          <span id="stat-gigs" class="tracker-stat__value">0</span>
+          <span class="tracker-stat__label">Gigs Landed</span>
+        </div>
+        <div class="tracker-stat">
+          <span id="stat-earned" class="tracker-stat__value">$0</span>
+          <span class="tracker-stat__label">Total Earned</span>
+        </div>
+      </div>
+
+      <!-- Weekly Activity Chart -->
+      <div class="tracker-chart">
+        <div class="tracker-chart__header">
+          <span class="tracker-chart__title">Weekly Activity</span>
+          <span id="chart-total" class="tracker-chart__total">0 DMs this week</span>
+        </div>
+        <canvas id="weekly-chart" class="tracker-chart__canvas" width="400" height="160"></canvas>
+      </div>
+
+      <!-- Status Tabs (filter) -->
+      <div class="tracker-tabs">
+        <div class="tracker-tabs__scroll" role="tablist" aria-label="Filter entries by status">
+          <button class="tracker-tab tracker-tab--active" role="tab" aria-selected="true" data-filter="all">All</button>
+          <button class="tracker-tab" role="tab" aria-selected="false" data-filter="sent">Sent</button>
+          <button class="tracker-tab" role="tab" aria-selected="false" data-filter="replied">Replied</button>
+          <button class="tracker-tab" role="tab" aria-selected="false" data-filter="call-booked">Call Booked</button>
+          <button class="tracker-tab" role="tab" aria-selected="false" data-filter="gig-landed">Gig Landed</button>
+          <button class="tracker-tab" role="tab" aria-selected="false" data-filter="no-response">No Response</button>
+        </div>
+      </div>
+
+      <!-- Entry List -->
+      <div id="tracker-list" class="tracker-list" role="list" aria-label="Outreach entries"></div>
+
+      <!-- Empty State -->
+      <div id="tracker-empty" class="tracker-empty" style="display:none;">
+        <div class="tracker-empty__icon">
+          <!-- Bar chart icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+        </div>
+        <h2 class="tracker-empty__title">No DMs logged yet</h2>
+        <p class="tracker-empty__desc">Start logging your outreach to track what's working.</p>
+        <button id="btn-empty-cta" class="tracker-empty__cta" type="button">Log Your First DM</button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       ADD ENTRY DRAWER (slides up from bottom)
+       ═══════════════════════════════════════════════════════════ -->
+  <div id="drawer-overlay" class="tracker-drawer-overlay" aria-hidden="true"></div>
+  <div id="entry-drawer" class="tracker-drawer" role="dialog" aria-modal="true" aria-label="Log a new DM" aria-hidden="true">
+    <div class="tracker-drawer__handle"></div>
+    <div class="tracker-drawer__header">
+      <h2 class="tracker-drawer__title">Log DM</h2>
+      <button id="btn-drawer-close" class="tracker-drawer__close" type="button" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <form id="entry-form" class="tracker-drawer__form" novalidate>
+      <!-- Project Name -->
+      <div class="tracker-field">
+        <label for="field-project" class="tracker-field__label">Project Name <span class="tracker-field__required">*</span></label>
+        <input id="field-project" type="text" class="tracker-field__input" placeholder="e.g. Arbitrum, EigenLayer" required autocomplete="off">
+      </div>
+
+      <!-- Platform (segmented control) -->
+      <div class="tracker-field">
+        <label class="tracker-field__label">Platform</label>
+        <div id="platform-segments" class="tracker-segments" role="radiogroup" aria-label="Select platform">
+          <button type="button" class="tracker-segment tracker-segment--active" role="radio" aria-checked="true" data-value="twitter">X</button>
+          <button type="button" class="tracker-segment" role="radio" aria-checked="false" data-value="discord">Discord</button>
+          <button type="button" class="tracker-segment" role="radio" aria-checked="false" data-value="telegram">Telegram</button>
+          <button type="button" class="tracker-segment" role="radio" aria-checked="false" data-value="email">Email</button>
+          <button type="button" class="tracker-segment" role="radio" aria-checked="false" data-value="other">Other</button>
+        </div>
+      </div>
+
+      <!-- DM Type -->
+      <div class="tracker-field">
+        <label for="field-dm-type" class="tracker-field__label">DM Type</label>
+        <select id="field-dm-type" class="tracker-field__select">
+          <option value="cold-pitch">Cold Pitch</option>
+          <option value="cm-application">CM Application</option>
+          <option value="shill-offer">Shill Offer</option>
+          <option value="collab">Collab</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <!-- Notes -->
+      <div class="tracker-field">
+        <label for="field-notes" class="tracker-field__label">Notes <span class="tracker-field__optional">(optional)</span></label>
+        <textarea id="field-notes" class="tracker-field__textarea" placeholder="Any context, follow-up reminders…" rows="3"></textarea>
+      </div>
+
+      <!-- Submit -->
+      <button id="btn-submit-entry" type="submit" class="tracker-drawer__submit">
+        Log DM
+      </button>
+    </form>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       DELETE CONFIRM DIALOG
+       ═══════════════════════════════════════════════════════════ -->
+  <div id="delete-overlay" class="tracker-delete-overlay" aria-hidden="true"></div>
+  <div id="delete-dialog" class="tracker-delete-dialog" role="alertdialog" aria-modal="true" aria-labelledby="delete-title" aria-hidden="true">
+    <h3 id="delete-title" class="tracker-delete-dialog__title">Delete Entry?</h3>
+    <p class="tracker-delete-dialog__desc">This action can't be undone.</p>
+    <div class="tracker-delete-dialog__actions">
+      <button id="btn-delete-cancel" type="button" class="tracker-delete-dialog__btn tracker-delete-dialog__btn--cancel">Cancel</button>
+      <button id="btn-delete-confirm" type="button" class="tracker-delete-dialog__btn tracker-delete-dialog__btn--delete">Delete</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       BOTTOM NAV
+       ═══════════════════════════════════════════════════════════ -->
+  <nav class="bottomnav" aria-label="Main navigation">
+
+    <!-- Home -->
+    <a href="/" class="bottomnav__item" aria-label="Home">
+      <svg class="bottomnav__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span class="bottomnav__label">Home</span>
+    </a>
+
+    <!-- Journey -->
+    <a href="/journey.html" class="bottomnav__item" aria-label="Journey">
+      <svg class="bottomnav__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+      <span class="bottomnav__label">Journey</span>
+    </a>
+
+    <!-- Explore -->
+    <a href="/explore.html" class="bottomnav__item" aria-label="Explore">
+      <svg class="bottomnav__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <span class="bottomnav__label">Explore</span>
+    </a>
+
+    <!-- AI -->
+    <a href="/ai.html" class="bottomnav__item" aria-label="AI">
+      <svg class="bottomnav__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/>
+        <path d="M12 18v4"/>
+        <path d="M8 18h8"/>
+        <path d="M6 10a6 6 0 0 0 12 0"/>
+      </svg>
+      <span class="bottomnav__label">AI</span>
+    </a>
+
+    <!-- Tracker (active) -->
+    <a href="/tracker.html" class="bottomnav__item bottomnav__item--active" aria-current="page" aria-label="Tracker">
+      <svg class="bottomnav__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="20" x2="18" y2="10"/>
+        <line x1="12" y1="20" x2="12" y2="4"/>
+        <line x1="6" y1="20" x2="6" y2="14"/>
+      </svg>
+      <span class="bottomnav__label">Tracker</span>
+    </a>
+
+  </nav>
+
+</body>
+</html>
