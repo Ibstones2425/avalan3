@@ -1,339 +1,177 @@
-/* ═══════════════════════════════════════════════════════════
-   AVALAN3 — ONBOARDING PAGE STYLES
-   Two-phase wizard: Splash screens → Setup steps
-   ═══════════════════════════════════════════════════════════ */
+/* ── ONBOARDING PAGE ────────────────────────────────────── */
 
-/* ── Phase Container ──────────────────────────────────── */
-.onboarding-phase {
-  position: fixed;
-  inset: 0;
+.onboarding-body {
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  background: var(--bg-primary);
+}
+
+.onboarding-shell {
+  width: 100%;
+  max-width: var(--max-width, 480px);
+  margin: 0 auto;
+  padding: 0 20px 40px;
   display: flex;
   flex-direction: column;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-  z-index: 0;
 }
 
-.onboarding-phase--active {
-  opacity: 1;
-  pointer-events: auto;
-  z-index: 1;
-}
-
-
-/* ═══════════════════════════════════════════════════════════
-   PHASE A — SPLASH SCREENS
-   ═══════════════════════════════════════════════════════════ */
-
-#splash-phase {
-  background: var(--bg-primary);
-  overflow: hidden;
-}
-
-/* ── Skip Button ──────────────────────────────────────── */
-.splash-skip {
-  position: absolute;
-  top: calc(env(safe-area-inset-top, 0) + var(--space-4));
-  right: var(--space-5);
-  z-index: 10;
-  padding: var(--space-2) var(--space-4);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--text-secondary);
-  background: var(--bg-secondary);
-  border: none;
-  border-radius: var(--radius-full);
-  cursor: pointer;
-  transition: background var(--transition-fast), color var(--transition-fast);
-}
-
-.splash-skip:hover {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-}
-
-/* ── Slide Track ──────────────────────────────────────── */
-.splash-track {
-  flex: 1;
-  display: flex;
-  position: relative;
-  overflow: hidden;
-}
-
-/* ── Individual Slide ─────────────────────────────────── */
-.splash-slide {
-  position: absolute;
-  inset: 0;
+/* Header */
+.onboarding-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: var(--space-10) var(--space-6);
-  opacity: 0;
-  transform: translateX(40px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  pointer-events: none;
+  justify-content: space-between;
+  height: 60px;
+  flex-shrink: 0;
 }
-
-.splash-slide--active {
-  opacity: 1;
-  transform: translateX(0);
-  pointer-events: auto;
-}
-
-.splash-slide--exit {
-  opacity: 0;
-  transform: translateX(-40px);
-}
-
-.splash-slide__inner {
-  max-width: 400px;
-  width: 100%;
-  text-align: center;
-}
-
-.splash-slide__badge {
-  display: inline-flex;
-  align-items: center;
-  padding: var(--space-1) var(--space-4);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  border-radius: var(--radius-full);
-  margin-bottom: var(--space-6);
-  background: var(--brand-primary-subtle);
-  color: var(--brand-primary);
-}
-
-/* Alternate badge color on even slides */
-.splash-slide:nth-child(even) .splash-slide__badge {
-  background: var(--brand-secondary-subtle);
-  color: var(--brand-secondary);
-}
-
-.splash-slide__title {
-  font-size: var(--text-3xl);
+.onboarding-logo {
+  font-size: 18px;
   font-weight: 800;
-  line-height: 1.15;
   color: var(--text-primary);
-  margin-bottom: var(--space-5);
   letter-spacing: -0.5px;
 }
-
-.splash-slide__body {
-  font-size: var(--text-md);
-  line-height: 1.6;
-  color: var(--text-secondary);
-  max-width: 340px;
-  margin: 0 auto;
-}
-
-/* ── Dot Indicators ───────────────────────────────────── */
-.splash-dots {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  padding: var(--space-6) 0 calc(var(--space-8) + env(safe-area-inset-bottom, 0));
-}
-
-.splash-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: var(--radius-full);
-  background: var(--border-default);
-  transition: background var(--transition-base), width var(--transition-base);
-}
-
-.splash-dot--active {
-  width: 24px;
-  background: var(--brand-primary);
-}
-
-
-/* ═══════════════════════════════════════════════════════════
-   PHASE B — SETUP STEPS
-   ═══════════════════════════════════════════════════════════ */
-
-#setup-phase {
-  background: var(--bg-primary);
-  overflow: hidden;
-}
-
-/* ── Setup Header (back + progress + count) ───────────── */
-.setup-header {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-4) var(--space-5);
-  padding-top: calc(env(safe-area-inset-top, 0) + var(--space-4));
-}
-
-.setup-back {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-md);
-  color: var(--text-primary);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: background var(--transition-fast);
-  flex-shrink: 0;
-}
-
-.setup-back:hover {
-  background: var(--bg-secondary);
-}
-
-.setup-back--hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.setup-progress-bar {
-  flex: 1;
-}
-
-.setup-step-count {
-  font-size: var(--text-sm);
+.onboarding-step-indicator {
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-muted);
-  flex-shrink: 0;
-  min-width: 28px;
-  text-align: right;
 }
 
-/* ── Step Track ───────────────────────────────────────── */
-.setup-track {
-  flex: 1;
-  position: relative;
+/* Progress */
+.onboarding-progress {
+  height: 3px;
+  background: var(--bg-tertiary);
+  border-radius: 99px;
   overflow: hidden;
+  margin-bottom: 40px;
+  flex-shrink: 0;
+}
+.onboarding-progress__fill {
+  height: 100%;
+  background: var(--brand-primary);
+  border-radius: 99px;
+  transition: width 0.35s ease;
 }
 
-/* ── Individual Step ──────────────────────────────────── */
-.setup-step {
-  position: absolute;
-  inset: 0;
-  overflow-y: auto;
-  padding: var(--space-6) var(--space-5);
-  opacity: 0;
-  transform: translateX(60px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
-  pointer-events: none;
-  -webkit-overflow-scrolling: touch;
+/* Step panels */
+.onboarding-step {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+}
+.onboarding-step--active {
+  display: flex;
 }
 
-.setup-step--active {
-  opacity: 1;
-  transform: translateX(0);
-  pointer-events: auto;
+.onboarding-step__header {
+  margin-bottom: 28px;
 }
-
-.setup-step--exit-left {
-  opacity: 0;
-  transform: translateX(-60px);
-}
-
-.setup-step__inner {
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.setup-step__question {
-  font-size: var(--text-xl);
-  font-weight: 700;
-  line-height: 1.3;
+.onboarding-step__title {
+  font-size: 24px;
+  font-weight: 800;
   color: var(--text-primary);
-  margin-bottom: var(--space-6);
-  letter-spacing: -0.3px;
+  line-height: 1.2;
+  margin: 0 0 8px;
+}
+.onboarding-step__subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
 }
 
-.setup-step__options {
+/* Option cards */
+.onboarding-options {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: 10px;
+  flex: 1;
+  margin-bottom: 24px;
 }
-
-/* ── Option Card refinement for onboarding ────────────── */
-.setup-step .option-card {
-  animation: optionCardIn 0.3s ease both;
+.onboarding-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  background: var(--surface-1);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-lg, 14px);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+  -webkit-tap-highlight-color: transparent;
 }
-
-.setup-step .option-card:nth-child(1) { animation-delay: 0.05s; }
-.setup-step .option-card:nth-child(2) { animation-delay: 0.10s; }
-.setup-step .option-card:nth-child(3) { animation-delay: 0.15s; }
-.setup-step .option-card:nth-child(4) { animation-delay: 0.20s; }
-.setup-step .option-card:nth-child(5) { animation-delay: 0.25s; }
-.setup-step .option-card:nth-child(6) { animation-delay: 0.30s; }
-
-@keyframes optionCardIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.onboarding-option:hover {
+  border-color: var(--border-default);
 }
-
-/* Hide checkmark SVG until selected */
-.option-card__check svg {
+.onboarding-option--selected {
+  border-color: var(--brand-primary);
+  background: var(--brand-primary-subtle);
+}
+.onboarding-option__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.onboarding-option__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.onboarding-option__desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+.onboarding-option__check {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-default);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, background 0.15s;
+}
+.onboarding-option__check svg {
+  width: 12px; height: 12px;
+  color: white;
   opacity: 0;
-  transition: opacity var(--transition-fast);
+  transition: opacity 0.15s;
 }
-
-.option-card.selected .option-card__check svg {
+.onboarding-option--selected .onboarding-option__check {
+  background: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+.onboarding-option--selected .onboarding-option__check svg {
   opacity: 1;
 }
 
-/* ── Setup Footer ─────────────────────────────────────── */
-.setup-footer {
-  padding: var(--space-4) var(--space-5);
-  padding-bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0));
+/* Actions */
+.onboarding-actions {
+  padding-top: 8px;
 }
-
-.setup-next-btn {
-  max-width: 400px;
-  margin: 0 auto;
+.onboarding-actions--row {
   display: flex;
+  gap: 12px;
+}
+.onboarding-actions--row .btn-secondary {
+  width: auto;
+  flex-shrink: 0;
+  padding: 0 20px;
+}
+.onboarding-actions--row .btn-primary {
+  flex: 1;
 }
 
-.setup-next-btn .spinner {
-  width: 18px;
-  height: 18px;
-  border-width: 2px;
-}
-
-
-/* ═══════════════════════════════════════════════════════════
-   RESPONSIVE — Larger screens
-   ═══════════════════════════════════════════════════════════ */
-
-@media (min-width: 480px) {
-  .splash-slide__title {
-    font-size: 40px;
-  }
-
-  .splash-slide__body {
-    font-size: var(--text-lg);
-  }
-
-  .setup-step__question {
-    font-size: var(--text-2xl);
-  }
-}
-
-@media (min-width: 768px) {
-  .splash-slide__inner {
-    max-width: 480px;
-  }
-
-  .setup-step__inner {
-    max-width: 460px;
-  }
+/* Error */
+.onboarding-error {
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: var(--error-subtle);
+  color: var(--error);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
 }

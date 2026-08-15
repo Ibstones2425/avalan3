@@ -870,51 +870,6 @@ body {
 /* ═══════════════════════════════════════════════════════════
    BOTTOM NAV
    ═══════════════════════════════════════════════════════════ */
-.bottom-nav {
-  position: sticky;
-  bottom: 0;
-  z-index: 40;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  background: var(--bg-primary);
-  border-top: 1px solid var(--border-subtle);
-  padding: var(--space-2) 0;
-  padding-bottom: calc(var(--space-2) + env(safe-area-inset-bottom, 0px));
-}
-
-.bottom-nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  padding: var(--space-1) var(--space-3);
-  color: var(--text-muted);
-  text-decoration: none;
-  font-size: 10px;
-  font-weight: var(--font-weight-medium);
-  transition: color var(--transition-fast);
-  min-width: 48px;
-  min-height: 44px;
-}
-
-.bottom-nav-item:hover {
-  color: var(--text-secondary);
-}
-
-.bottom-nav-item.active {
-  color: var(--brand-primary);
-}
-
-.bottom-nav-item.active svg {
-  stroke-width: 2.5;
-}
-
-.bottom-nav-item svg {
-  flex-shrink: 0;
-}
-
 /* ═══════════════════════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════════════════════ */
